@@ -130,8 +130,8 @@ export default function Home() {
             <Link to="/enquiry" style={btnMaroon}>Request This Menu</Link>
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(320px,1fr))', gap: 2 }}>
-            {dishes.map((d, i) => (
-              <DishCard key={d.name} dish={d} isVeg={menuTab === 'veg'} delay={i * 0.1} />
+            {dishes.map((d) => (
+              <DishCard key={d.name} dish={d} isVeg={menuTab === 'veg'} />
             ))}
           </div>
           <div style={{ textAlign: 'center', marginTop: 64 }} className="reveal">
@@ -267,7 +267,7 @@ export default function Home() {
   )
 }
 
-function DishCard({ dish, isVeg, delay }: { dish: { name: string; desc: string; price: string; img: string }; isVeg: boolean; delay: number }) {
+function DishCard({ dish, isVeg }: { dish: { name: string; desc: string; price: string; img: string }; isVeg: boolean }) {
   return (
     <div style={{ position: 'relative', overflow: 'hidden', aspectRatio: '3/4', cursor: 'pointer', background: 'var(--iv2)' }} className="reveal dish-card-wrap"
       onMouseEnter={e => { const img = (e.currentTarget as HTMLElement).querySelector('.dish-bg-img') as HTMLElement; if (img) img.style.transform = 'scale(1.07)' }}
