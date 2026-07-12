@@ -29,7 +29,7 @@ export default function Menu() {
 
   return (
     <div style={{ background: 'var(--iv)', paddingTop: 80 }}>
-      <div style={{ background: 'var(--m)', padding: '80px 48px 64px' }}>
+      <div style={{ background: 'var(--m)', padding: '80px clamp(20px, 5vw, 48px) 64px' }}>
         <div style={{ maxWidth: 1280, margin: '0 auto' }}>
           <div style={{ display:'inline-flex', alignItems:'center', gap:12, fontFamily:'"Cormorant Garamond",serif', fontStyle:'italic', fontSize:'1rem', color:'var(--cu2)', marginBottom:16 }}>
             <span style={{ display:'block', width:28, height:1, background:'var(--cu)' }}/>Foods We Serve
@@ -45,9 +45,9 @@ export default function Menu() {
           </div>
         </div>
       </div>
-      <section style={{ background:'#fff', padding:'72px 48px 112px' }}>
+      <section style={{ background:'#fff', padding:'72px clamp(20px, 5vw, 48px) 112px' }}>
         <div style={{ maxWidth:1280, margin:'0 auto' }}>
-          <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill,minmax(320px,1fr))', gap:2, marginBottom:72 }}>
+          <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill,minmax(min(100%,320px),1fr))', gap:2, marginBottom:72 }}>
             {dishes.map((d,i) => (
               <div key={d.name} style={{ position:'relative', overflow:'hidden', aspectRatio:'3/4', background:'var(--iv2)' }} className={`reveal d${(i%3)+1}`}
                 onMouseEnter={e=>{const img=(e.currentTarget as HTMLElement).querySelector('img') as HTMLElement;if(img)img.style.transform='scale(1.07)'}}

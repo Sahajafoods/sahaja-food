@@ -4,7 +4,7 @@ import { Link, useLocation } from 'react-router-dom'
 const S: Record<string, React.CSSProperties> = {
   nav: {
     position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100,
-    padding: '0 48px',
+    padding: '0 clamp(20px, 5vw, 48px)',
     transition: 'background .45s ease, box-shadow .45s ease',
   },
   navSolid: {

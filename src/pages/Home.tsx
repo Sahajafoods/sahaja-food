@@ -65,7 +65,7 @@ export default function Home() {
       <section style={{ minHeight: '100vh', position: 'relative', display: 'flex', alignItems: 'flex-end', overflow: 'hidden' }}>
         <div ref={bgRef} style={{ position: 'absolute', inset: 0, backgroundImage: "url('https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=1800&q=90&auto=format&fit=crop')", backgroundSize: 'cover', backgroundPosition: 'center' }} />
         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(20,6,12,.98) 0%, rgba(20,6,12,.78) 38%, rgba(20,6,12,.45) 65%, rgba(20,6,12,.18) 100%), linear-gradient(to right, rgba(20,6,12,.5) 0%, transparent 60%)' }} />
-        <div style={{ position: 'relative', zIndex: 2, maxWidth: 1280, margin: '0 auto', width: '100%', padding: '0 48px 96px' }}>
+        <div style={{ position: 'relative', zIndex: 2, maxWidth: 1280, margin: '0 auto', width: '100%', padding: '0 clamp(20px, 5vw, 48px) 96px' }}>
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: 14, fontFamily: '"Cormorant Garamond",serif', fontStyle: 'italic', fontSize: '1.1rem', color: 'var(--cu2)', marginBottom: 24, animation: 'fadeUp .8s .3s both', opacity: 0 }}>
             <span style={{ display: 'block', width: 40, height: 1, background: 'var(--cu)' }} />
             Authentic South Indian Catering · Bangalore
@@ -112,7 +112,7 @@ export default function Home() {
       </div>
 
       {/* ── MENU PREVIEW ── */}
-      <section style={{ background: '#fff', padding: '112px 48px' }} id="menu">
+      <section style={{ background: '#fff', padding: 'clamp(64px, 10vw, 112px) clamp(20px, 5vw, 48px)' }} id="menu">
         <div style={{ maxWidth: 1280, margin: '0 auto' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: 64, flexWrap: 'wrap', gap: 24 }} className="reveal">
             <div>
@@ -129,7 +129,7 @@ export default function Home() {
             </div>
             <Link to="/enquiry" style={btnMaroon}>Request This Menu</Link>
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(320px,1fr))', gap: 2 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(min(100%,320px),1fr))', gap: 2 }}>
             {dishes.map((d) => (
               <DishCard key={d.name} dish={d} isVeg={menuTab === 'veg'} />
             ))}
@@ -150,7 +150,7 @@ export default function Home() {
             <div style={{ fontSize: '.72rem', fontWeight: 500, letterSpacing: '.1em', textTransform: 'uppercase', color: 'rgba(255,255,255,.5)', marginTop: 6 }}>Events Celebrated</div>
           </div>
         </div>
-        <div style={{ background: 'var(--iv)', display: 'flex', alignItems: 'center', padding: '80px 80px 80px 60px' }}>
+        <div style={{ background: 'var(--iv)', display: 'flex', alignItems: 'center', padding: 'clamp(56px, 8vw, 80px) clamp(20px, 6vw, 80px) clamp(56px, 8vw, 80px) clamp(20px, 5vw, 60px)' }}>
           <div style={{ maxWidth: 520 }}>
             <div style={eyebrow} className="reveal">Our Story</div>
             <h2 style={h2} className="reveal d1">Cooked with the love<br/>of a <em style={{ fontStyle: 'italic', color: 'var(--m)' }}>home kitchen</em></h2>
@@ -179,7 +179,7 @@ export default function Home() {
       </div>
 
       {/* ── HOW IT WORKS ── */}
-      <section style={{ background: 'var(--iv2)', padding: '112px 48px' }} id="how">
+      <section style={{ background: 'var(--iv2)', padding: 'clamp(64px, 10vw, 112px) clamp(20px, 5vw, 48px)' }} id="how">
         <div style={{ maxWidth: 1280, margin: '0 auto' }}>
           <div style={{ maxWidth: 560, marginBottom: 0 }} className="reveal">
             <div style={eyebrow}>The Process</div>
@@ -206,7 +206,7 @@ export default function Home() {
       </section>
 
       {/* ── TESTIMONIALS ── */}
-      <section style={{ background: 'var(--m3)', padding: '112px 48px', position: 'relative', overflow: 'hidden' }} id="testimonials">
+      <section style={{ background: 'var(--m3)', padding: 'clamp(64px, 10vw, 112px) clamp(20px, 5vw, 48px)', position: 'relative', overflow: 'hidden' }} id="testimonials">
         <div style={{ position: 'absolute', top: -200, right: -40, fontFamily: '"Cormorant Garamond",serif', fontSize: '48rem', fontWeight: 700, color: 'rgba(255,255,255,.02)', lineHeight: 1, pointerEvents: 'none', userSelect: 'none' }}>"</div>
         <div style={{ maxWidth: 1280, margin: '0 auto', position: 'relative', zIndex: 2 }}>
           <div style={{ ...eyebrow, color: 'var(--cu2)' }} className="reveal">What Guests Say</div>

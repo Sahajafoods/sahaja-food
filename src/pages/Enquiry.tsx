@@ -25,7 +25,7 @@ export default function Enquiry() {
 
   return (
     <div style={{ background: 'var(--iv)', paddingTop: 80 }}>
-      <div style={{ background: 'var(--m)', padding: '80px 48px' }}>
+      <div style={{ background: 'var(--m)', padding: '80px clamp(20px, 5vw, 48px)' }}>
         <div style={{ maxWidth: 1280, margin: '0 auto' }}>
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: 12, fontFamily: '"Cormorant Garamond",serif', fontStyle: 'italic', fontSize: '1rem', color: 'var(--cu2)', marginBottom: 16 }}>
             <span style={{ display: 'block', width: 28, height: 1, background: 'var(--cu)' }} />Book Your Event
@@ -33,7 +33,7 @@ export default function Enquiry() {
           <h1 style={{ fontFamily: '"Cormorant Garamond",serif', fontSize: 'clamp(2.4rem,5vw,4rem)', fontWeight: 700, color: '#fff', lineHeight: 1.1 }}>Let's make your event <em style={{ fontStyle:'italic', color:'var(--cu2)' }}>delicious</em></h1>
         </div>
       </div>
-      <div style={{ maxWidth: 1280, margin: '0 auto', padding: '80px 48px 112px' }}>
+      <div style={{ maxWidth: 1280, margin: '0 auto', padding: '80px clamp(20px, 5vw, 48px) 112px' }}>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.4fr', gap: 96, alignItems: 'start' }} className="enq-grid">
           <div style={{ position: 'sticky', top: 100 }} className="reveal-l">
             <p style={{ fontSize: '.95rem', color: 'var(--tx2)', lineHeight: 1.85, marginBottom: 40 }}>Tell us about your celebration and we'll get back within a few hours with a confirmation and quote. No pressure, no commitment upfront.</p>
@@ -44,7 +44,7 @@ export default function Enquiry() {
               </div>
             ))}
           </div>
-          <div style={{ background:'#fff', padding:56, boxShadow:'0 12px 72px rgba(61,21,32,.09)', border:'1px solid var(--iv3)' }} className="reveal-r">
+          <div style={{ background:'#fff', padding:'clamp(24px, 5vw, 56px)', boxShadow:'0 12px 72px rgba(61,21,32,.09)', border:'1px solid var(--iv3)' }} className="reveal-r">
             <form onSubmit={handleSubmit}>
               <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:22 }} className="form-row">
                 <div style={{ display:'flex', flexDirection:'column', gap:9, marginBottom:22 }}>

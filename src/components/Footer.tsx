@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 
 export default function Footer() {
   return (
-    <footer style={{ background: 'var(--m)', color: '#fff', padding: '80px 48px 40px' }}>
+    <footer style={{ background: 'var(--m)', color: '#fff', padding: '80px clamp(20px, 5vw, 48px) 40px' }}>
       <div style={{ maxWidth: 1280, margin: '0 auto' }}>
         <div style={{ display: 'grid', gridTemplateColumns: '2.2fr 1fr 1fr 1fr', gap: 56, marginBottom: 56 }} className="footer-grid">
           <div>

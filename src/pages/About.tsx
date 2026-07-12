@@ -5,7 +5,7 @@ export default function About() {
   useReveal()
   return (
     <div style={{ background:'var(--iv)', paddingTop:80 }}>
-      <div style={{ background:'var(--m)', padding:'80px 48px' }}>
+      <div style={{ background:'var(--m)', padding:'80px clamp(20px, 5vw, 48px)' }}>
         <div style={{ maxWidth:1280, margin:'0 auto' }}>
           <div style={{ display:'inline-flex', alignItems:'center', gap:12, fontFamily:'"Cormorant Garamond",serif', fontStyle:'italic', fontSize:'1rem', color:'var(--cu2)', marginBottom:16 }}>
             <span style={{ display:'block', width:28, height:1, background:'var(--cu)' }}/>Our Story
@@ -13,7 +13,7 @@ export default function About() {
           <h1 style={{ fontFamily:'"Cormorant Garamond",serif', fontSize:'clamp(2.4rem,5vw,4rem)', fontWeight:700, color:'#fff' }}>Made with <em style={{ fontStyle:'italic', color:'var(--cu2)' }}>intention</em></h1>
         </div>
       </div>
-      <section style={{ padding:'112px 48px' }}>
+      <section style={{ padding:'clamp(64px, 10vw, 112px) clamp(20px, 5vw, 48px)' }}>
         <div style={{ maxWidth:1280, margin:'0 auto' }}>
           <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:80, alignItems:'center' }} className="about-pg-grid">
             <div style={{ position:'relative' }} className="reveal-l">
