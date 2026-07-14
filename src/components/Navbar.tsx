@@ -8,26 +8,29 @@ const S: Record<string, React.CSSProperties> = {
   nav: {
     position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100,
     padding: '0 clamp(20px, 5vw, 48px)',
-    transition: 'background .45s ease, box-shadow .45s ease',
+    transition: 'background .45s ease, border-color .45s ease',
+  },
+  navTransparent: {
+    background: 'linear-gradient(to bottom, rgba(10,3,6,.75) 0%, rgba(10,3,6,.35) 60%, transparent 100%)',
   },
   navSolid: {
-    background: 'rgba(251,246,237,.97)',
+    background: 'rgba(251,246,237,.98)',
     backdropFilter: 'blur(20px)',
-    boxShadow: '0 1px 0 rgba(61,21,32,.09)',
+    borderBottom: '1px solid rgba(61,21,32,.08)',
   },
   inner: {
     maxWidth: 1280, margin: '0 auto',
     display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-    height: 80,
+    height: 88,
   },
   logoWrap: { display: 'flex', alignItems: 'center', gap: 14, textDecoration: 'none' },
-  logoImg: { width: 52, height: 52, objectFit: 'contain' as const, filter: 'drop-shadow(0 2px 8px rgba(61,21,32,.25))', transition: 'transform .3s' },
+  logoImg: { width: 58, height: 58, objectFit: 'contain' as const, filter: 'drop-shadow(0 2px 12px rgba(0,0,0,.4))', transition: 'transform .3s' },
   logoWords: { display: 'flex', flexDirection: 'column' as const, lineHeight: '1' },
   links: { display: 'flex', alignItems: 'center', gap: 40 },
   bookBtn: {
     background: 'var(--m)', color: '#fff',
-    padding: '12px 28px', fontFamily: 'Jost, sans-serif',
-    fontWeight: 600, fontSize: '.8rem', letterSpacing: '.1em', textTransform: 'uppercase' as const,
+    padding: '13px 32px', fontFamily: 'Jost, sans-serif',
+    fontWeight: 600, fontSize: '.82rem', letterSpacing: '.1em', textTransform: 'uppercase' as const,
     transition: 'background .3s', textDecoration: 'none', display: 'inline-block',
     boxShadow: '0 4px 20px rgba(61,21,32,.3)',
   },
@@ -78,8 +81,9 @@ export default function Navbar() {
   }
 
   const nameColor = (!isHome || solid) ? 'var(--m)' : '#fff'
-  const tagColor = (!isHome || solid) ? 'var(--cu)' : 'rgba(255,255,255,.6)'
-  const linkColor = (!isHome || solid) ? 'var(--tx)' : 'rgba(255,255,255,.82)'
+  const tagColor = (!isHome || solid) ? 'var(--cu)' : 'rgba(255,255,255,.75)'
+  const linkColor = (!isHome || solid) ? 'var(--tx)' : 'rgba(255,255,255,.92)'
+  const linkShadow = solid ? 'none' : '0 1px 8px rgba(0,0,0,.5)'
   const hamColor = (!isHome || solid) ? 'var(--tx)' : 'rgba(255,255,255,.85)'
 
   return (
@@ -107,12 +111,12 @@ export default function Navbar() {
         </div>
       )}
 
-      <nav style={{ ...S.nav, ...(solid ? S.navSolid : {}) }}>
+      <nav style={{ ...S.nav, ...(solid ? S.navSolid : S.navTransparent) }}>
         <div style={S.inner}>
           <Link to="/" style={S.logoWrap}>
             <img src="/Sahaja_Logo.png" alt="Sahaja Food" style={{ ...S.logoImg, filter: solid ? 'none' : S.logoImg.filter }} />
             <div style={S.logoWords}>
-              <span style={{ fontFamily: '"Cormorant Garamond", serif', fontSize: '1.45rem', fontWeight: 700, letterSpacing: '.14em', textTransform: 'uppercase', color: nameColor, textShadow: solid ? 'none' : '0 1px 12px rgba(0,0,0,.5)', transition: 'color .3s' }}>
+              <span style={{ fontFamily: '"Cormorant Garamond", serif', fontSize: '1.5rem', fontWeight: 700, letterSpacing: '.18em', textTransform: 'uppercase', color: nameColor, textShadow: solid ? 'none' : '0 1px 16px rgba(0,0,0,.6)', transition: 'color .3s' }}>
                 Sahaja Food
               </span>
               <span style={{ fontFamily: '"Cormorant Garamond", serif', fontSize: '.72rem', fontStyle: 'italic', color: tagColor, marginTop: 3, transition: 'color .3s' }}>
@@ -124,7 +128,7 @@ export default function Navbar() {
           {/* Desktop links */}
           <div style={S.links} className="desktop-nav">
             {['/menu', '/about', '/gallery'].map((path) => (
-              <Link key={path} to={path} style={{ fontSize: '.8rem', fontWeight: 500, letterSpacing: '.08em', textTransform: 'uppercase', color: linkColor, textDecoration: 'none', transition: 'color .3s' }}>
+              <Link key={path} to={path} style={{ fontSize: '.8rem', fontWeight: 500, letterSpacing: '.08em', textTransform: 'uppercase', color: linkColor, textShadow: linkShadow, textDecoration: 'none', transition: 'color .3s' }}>
                 {path.slice(1)}
               </Link>
             ))}

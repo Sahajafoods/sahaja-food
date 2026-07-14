@@ -57,8 +57,8 @@ export default function Home() {
       {/* ── HERO ── */}
       <section style={{ minHeight: '100vh', position: 'relative', display: 'flex', alignItems: 'flex-end', overflow: 'hidden' }}>
         <div ref={bgRef} style={{ position: 'absolute', inset: 0, backgroundImage: "url('https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1800&q=90&auto=format&fit=crop')", backgroundSize: 'cover', backgroundPosition: 'center' }} />
-        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(10,3,6,.97) 0%, rgba(10,3,6,.7) 40%, rgba(10,3,6,.3) 70%, transparent 100%), linear-gradient(to right, rgba(20,6,12,.5) 0%, transparent 60%)' }} />
-        <div style={{ position: 'relative', zIndex: 2, maxWidth: 1280, margin: '0 auto', width: '100%', padding: '0 clamp(20px, 5vw, 48px) 96px' }}>
+        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(10,3,6,.65) 0%, transparent 200px), linear-gradient(to top, rgba(10,3,6,.97) 0%, rgba(10,3,6,.7) 40%, rgba(10,3,6,.3) 70%, transparent 100%), linear-gradient(to right, rgba(20,6,12,.5) 0%, transparent 60%)' }} />
+        <div style={{ position: 'relative', zIndex: 2, maxWidth: 1280, margin: '0 auto', width: '100%', padding: '120px clamp(20px, 5vw, 48px) 96px' }}>
           <div style={{ width: 60, height: 1, background: 'var(--cu)', marginBottom: 20, animation: 'fadeUp .8s .1s both', opacity: 0 }} />
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: 14, fontFamily: '"Cormorant Garamond",serif', fontStyle: 'italic', fontSize: '1.1rem', color: 'var(--cu2)', marginBottom: 24, animation: 'fadeUp .8s .3s both', opacity: 0 }}>
             <span style={{ display: 'block', width: 40, height: 1, background: 'var(--cu)' }} />
