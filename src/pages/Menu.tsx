@@ -82,12 +82,14 @@ function ComboCard({ combo, delay, onOpen }: { combo: { name: string; items: str
 
 function SpreadBanner({ img, title, subtitle }: { img: string; title: string; subtitle: string }) {
   return (
-    <div style={{ position: 'relative', height: 500, overflow: 'hidden' }} className="reveal">
-      <img src={img} alt={title} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} loading="lazy" onError={onImgError} />
-      <div style={{ position: 'absolute', inset: 0, background: 'var(--m)', opacity: .5 }} />
-      <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', padding: '0 24px' }}>
-        <div style={{ fontFamily: '"Cormorant Garamond",serif', fontSize: 'clamp(2.4rem,5vw,4rem)', fontWeight: 700, color: '#fff', marginBottom: 16 }}>{title}</div>
-        <div style={{ fontFamily: '"Cormorant Garamond",serif', fontStyle: 'italic', fontSize: '1.15rem', color: 'rgba(255,255,255,.88)', maxWidth: 520 }}>{subtitle}</div>
+    <div style={{ position: 'relative', height: 320, overflow: 'hidden' }} className="reveal">
+      <img src={img} alt={title} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 30%' }} loading="lazy" onError={onImgError} />
+      <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to right, rgba(20,6,12,.92) 0%, rgba(20,6,12,.75) 35%, rgba(20,6,12,.3) 65%, rgba(20,6,12,.05) 100%)' }} />
+      <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center' }}>
+        <div style={{ maxWidth: 480, padding: '0 24px' }} className="spread-banner-text">
+          <div style={{ fontFamily: '"Cormorant Garamond",serif', fontStyle: 'italic', fontSize: '.8rem', color: 'rgba(255,255,255,.88)', marginBottom: 12 }}>{subtitle}</div>
+          <div style={{ fontFamily: '"Cormorant Garamond",serif', fontSize: 'clamp(1.6rem,2.5vw,2.4rem)', fontWeight: 700, color: '#fff' }}>{title}</div>
+        </div>
       </div>
     </div>
   )
@@ -131,8 +133,9 @@ export default function Menu() {
 
         {/* ── FULL-BLEED SPREAD BANNERS ── */}
         <div style={{ marginTop: 96 }}>
-          <SpreadBanner img="https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=1600&q=90&auto=format&fit=crop" title="Pure Vegetarian" subtitle="Freshly prepared with the finest ingredients, every single day" />
-          <SpreadBanner img="https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?w=1600&q=90&auto=format&fit=crop" title="Non Vegetarian" subtitle="Bold flavours, tender meats, made the day of your event" />
+          <SpreadBanner img="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=1600&q=90&auto=format&fit=crop" title="Pure Vegetarian" subtitle="Freshly prepared with the finest ingredients, every single day" />
+          <div style={{ height: 1, width: '100%', background: 'rgba(184,120,74,.2)' }} />
+          <SpreadBanner img="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=1600&q=90&auto=format&fit=crop" title="Non Vegetarian" subtitle="Bold flavours, tender meats, made the day of your event" />
         </div>
 
         <div style={{ maxWidth: 1280, margin: '0 auto', padding: '96px clamp(20px, 5vw, 48px) 0' }}>
@@ -203,6 +206,10 @@ export default function Menu() {
           .menu-tabs button{padding:11px 16px!important;font-size:.7rem!important}
         }
         .combo-card:hover .combo-card-hint{opacity:1!important}
+        .spread-banner-text{padding-left:72px!important}
+        @media(max-width:768px){
+          .spread-banner-text{padding-left:28px!important}
+        }
       `}</style>
 
       <Lightbox item={lightboxItem} onClose={() => setLightboxItem(null)} />
