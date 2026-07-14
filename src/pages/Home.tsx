@@ -23,9 +23,9 @@ const NONVEG_DISHES = [
 
 const GALLERY_IMAGES = [
   'https://lhlqtrexevjgfhiszsak.supabase.co/storage/v1/object/public/Gallery/1.jpeg',
-  'https://lhlqtrexevjgfhiszsak.supabase.co/storage/v1/object/public/Gallery/2.png',
-  'https://lhlqtrexevjgfhiszsak.supabase.co/storage/v1/object/public/Gallery/3.png',
-  'https://lhlqtrexevjgfhiszsak.supabase.co/storage/v1/object/public/Gallery/4.png',
+  'https://lhlqtrexevjgfhiszsak.supabase.co/storage/v1/object/public/Gallery/2.jpg',
+  'https://lhlqtrexevjgfhiszsak.supabase.co/storage/v1/object/public/Gallery/3.jpg',
+  'https://lhlqtrexevjgfhiszsak.supabase.co/storage/v1/object/public/Gallery/4.jpg',
   'https://lhlqtrexevjgfhiszsak.supabase.co/storage/v1/object/public/Gallery/6.jpg',
   'https://lhlqtrexevjgfhiszsak.supabase.co/storage/v1/object/public/Gallery/7.jpg',
   'https://lhlqtrexevjgfhiszsak.supabase.co/storage/v1/object/public/Gallery/9.jpeg',
