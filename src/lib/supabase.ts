@@ -12,7 +12,8 @@ export interface Enquiry {
   email: string
   event_type: string
   event_date: string
-  guest_count: number
+  event_time: string
+  guest_count: string
   menu_preference: string
   location?: string
   message?: string

@@ -189,7 +189,7 @@ export default function Admin() {
                   </div>
                 </div>
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(160px,1fr))', gap: '8px 24px' }}>
-                  {[['Event', e.event_type], ['Date', e.event_date], ['Guests', String(e.guest_count)], ['Menu', e.menu_preference], ['Location', e.location || '—']].map(([label, val]) => (
+                  {[['Event', e.event_type], ['Date', e.event_date], ['Time', e.event_time], ['Guests', String(e.guest_count)], ['Menu', e.menu_preference], ['Location', e.location || '—']].map(([label, val]) => (
                     <div key={label}>
                       <span style={{ fontSize: '0.72rem', fontWeight: 600, color: 'var(--warm)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>{label}</span>
                       <div style={{ fontSize: '0.9rem', color: '#2C2C2C', marginTop: 2 }}>{val}</div>

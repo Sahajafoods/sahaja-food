@@ -10,9 +10,9 @@ export default async function handler(req: Request) {
   if (req.method !== 'POST') return new Response('Method not allowed', { status: 405 })
 
   const body = await req.json()
-  const { name, email, phone, event_type, event_date, guest_count, menu_preference, location, message } = body
+  const { name, email, phone, event_type, event_date, event_time, guest_count, menu_preference, location, message } = body
 
-  const details = [['Event Type', event_type], ['Date', event_date], ['Guests', guest_count], ['Menu', menu_preference], ['Location', location || 'Not specified']]
+  const details = [['Event Type', event_type], ['Date', event_date], ['Time', event_time], ['Guests', guest_count], ['Menu', menu_preference], ['Location', location || 'Not specified']]
 
   const clientHtml = `
     <div style="font-family:Georgia,serif;max-width:560px;margin:0 auto;color:#2C2C2C">

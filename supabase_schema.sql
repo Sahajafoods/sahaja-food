@@ -10,13 +10,19 @@ create table public.enquiries (
   email text not null,
   event_type text not null,
   event_date date not null,
-  guest_count integer not null,
+  event_time time not null,
+  guest_count text not null,
   menu_preference text not null,
   location text,
   message text,
   status text default 'new' check (status in ('new', 'contacted', 'confirmed', 'closed')),
   created_at timestamptz default now()
 );
+
+-- ── MIGRATION (run this in the Supabase SQL Editor if the table already exists in production) ──
+-- alter table public.enquiries add column event_time time not null default '12:00';
+-- alter table public.enquiries alter column event_time drop default;
+-- alter table public.enquiries alter column guest_count type text using guest_count::text;
 
 alter table public.enquiries enable row level security;
 
