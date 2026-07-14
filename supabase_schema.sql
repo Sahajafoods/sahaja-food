@@ -33,23 +33,39 @@ create policy "Anyone can submit enquiry"
   on public.enquiries for insert
   with check (true);
 
--- Admin only: SELECT — only nandinips90@gmail.com and nageshug@gmail.com
+-- Admin only: SELECT — only nandinips90@gmail.com and foodssahaja@gmail.com
+--
+-- NOTE: this is intentionally scoped to the two admin emails, not just
+-- `auth.role() = 'authenticated'`. Google OAuth sign-in is open to any
+-- Google account — restricting the SELECT/UPDATE policies to `authenticated`
+-- alone would let ANY signed-in Google user read every customer's name,
+-- phone and address directly via the Supabase REST API, even though the
+-- app's UI immediately signs out and blocks non-admin emails on the client.
+-- RLS is the real security boundary; the client-side check is just UX.
 create policy "Admin can view enquiries"
   on public.enquiries for select
   using (
-    auth.jwt() ->> 'email' in ('nandinips90@gmail.com', 'nageshug@gmail.com')
+    auth.jwt() ->> 'email' in ('nandinips90@gmail.com', 'foodssahaja@gmail.com')
   );
 
 -- Admin only: UPDATE status
 create policy "Admin can update status"
   on public.enquiries for update
   using (
-    auth.jwt() ->> 'email' in ('nandinips90@gmail.com', 'nageshug@gmail.com')
+    auth.jwt() ->> 'email' in ('nandinips90@gmail.com', 'foodssahaja@gmail.com')
   );
 
 -- ── SUPABASE AUTH SETUP (do this in Dashboard) ──────────────────────
--- Authentication > Providers > Email → Enable "Magic Link / OTP"
--- Authentication > Email Templates → customise if desired
--- No additional steps needed — OTP login is built into Supabase Auth by default.
--- Both nandinips90@gmail.com and nageshug@gmail.com can sign in via OTP.
--- The app blocks other emails before even calling Supabase.
+-- 1. Authentication > Providers > Google → Enable, and paste the OAuth
+--    Client ID + Client Secret from a Google Cloud Console OAuth 2.0
+--    Web application credential.
+-- 2. In that same Google Cloud OAuth client, add this Authorized redirect URI:
+--      https://<your-project-ref>.supabase.co/auth/v1/callback
+--    (shown on the Supabase Google provider settings page)
+-- 3. Authentication > URL Configuration > Redirect URLs → add:
+--      https://sahaja.food/admin
+--    Add http://localhost:5173/admin too if you want to test Google
+--    sign-in from a local dev server.
+-- Both nandinips90@gmail.com and foodssahaja@gmail.com can sign in via
+-- Google. Any other Google account is signed out immediately by the app
+-- and blocked from reading/writing enquiries by the RLS policies above.
