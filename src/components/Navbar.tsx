@@ -1,7 +1,8 @@
-import { useState, useEffect } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { useState, useEffect, useRef } from 'react'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import type { Session } from '@supabase/supabase-js'
 import { supabase } from '../lib/supabase'
+import SignInModal from './SignInModal'
 
 const S: Record<string, React.CSSProperties> = {
   nav: {
@@ -36,7 +37,11 @@ export default function Navbar() {
   const [solid, setSolid] = useState(false)
   const [mobOpen, setMobOpen] = useState(false)
   const [session, setSession] = useState<Session | null>(null)
+  const [showSignIn, setShowSignIn] = useState(false)
+  const [avatarMenuOpen, setAvatarMenuOpen] = useState(false)
+  const avatarRef = useRef<HTMLDivElement>(null)
   const location = useLocation()
+  const navigate = useNavigate()
   const isHome = location.pathname === '/'
 
   useEffect(() => {
@@ -45,7 +50,7 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  useEffect(() => { setMobOpen(false) }, [location])
+  useEffect(() => { setMobOpen(false); setAvatarMenuOpen(false) }, [location])
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => setSession(data.session))
@@ -53,9 +58,24 @@ export default function Navbar() {
     return () => listener.subscription.unsubscribe()
   }, [])
 
+  useEffect(() => {
+    if (!avatarMenuOpen) return
+    const onClickOutside = (e: MouseEvent) => {
+      if (avatarRef.current && !avatarRef.current.contains(e.target as Node)) setAvatarMenuOpen(false)
+    }
+    document.addEventListener('mousedown', onClickOutside)
+    return () => document.removeEventListener('mousedown', onClickOutside)
+  }, [avatarMenuOpen])
+
   const firstName = session
     ? (session.user.user_metadata?.full_name || session.user.user_metadata?.name || session.user.email || 'there').split(' ')[0].split('@')[0]
     : ''
+
+  const signOut = async () => {
+    await supabase.auth.signOut()
+    setAvatarMenuOpen(false)
+    navigate('/')
+  }
 
   const nameColor = (!isHome || solid) ? 'var(--m)' : '#fff'
   const tagColor = (!isHome || solid) ? 'var(--cu)' : 'rgba(255,255,255,.6)'
@@ -76,12 +96,13 @@ export default function Navbar() {
             <Link key={path} to={path} style={{ fontFamily: '"Cormorant Garamond", serif', fontSize: '2.4rem', fontWeight: 600, color: 'rgba(255,255,255,.88)', textDecoration: 'none', letterSpacing: '.06em' }}>{label}</Link>
           ))}
           {session ? (
-            <Link to="/my-bookings" style={{ fontFamily: '"Cormorant Garamond", serif', fontSize: '2.4rem', fontWeight: 600, color: 'rgba(255,255,255,.88)', textDecoration: 'none', letterSpacing: '.06em' }}>My Bookings</Link>
+            <>
+              <span style={{ fontFamily: '"Cormorant Garamond", serif', fontStyle: 'italic', fontSize: '1.1rem', color: 'var(--cu2)' }}>Hi, {firstName}</span>
+              <Link to="/my-bookings" style={{ fontFamily: '"Cormorant Garamond", serif', fontSize: '2.4rem', fontWeight: 600, color: 'rgba(255,255,255,.88)', textDecoration: 'none', letterSpacing: '.06em' }}>My Bookings</Link>
+              <button onClick={signOut} style={{ background: 'none', border: 'none', fontFamily: '"Cormorant Garamond", serif', fontSize: '2.4rem', fontWeight: 600, color: 'rgba(255,255,255,.88)', letterSpacing: '.06em', cursor: 'pointer' }}>Sign Out</button>
+            </>
           ) : (
-            <Link to="/enquiry?signin=1" style={{ fontFamily: '"Cormorant Garamond", serif', fontSize: '2.4rem', fontWeight: 600, color: 'rgba(255,255,255,.88)', textDecoration: 'none', letterSpacing: '.06em' }}>Sign In</Link>
-          )}
-          {session && (
-            <span style={{ fontFamily: '"Cormorant Garamond", serif', fontStyle: 'italic', fontSize: '1.1rem', color: 'var(--cu2)' }}>Hi, {firstName}</span>
+            <button onClick={() => { setMobOpen(false); setShowSignIn(true) }} style={{ background: 'none', border: 'none', fontFamily: '"Cormorant Garamond", serif', fontSize: '2.4rem', fontWeight: 600, color: 'rgba(255,255,255,.88)', letterSpacing: '.06em', cursor: 'pointer' }}>Sign In</button>
           )}
         </div>
       )}
@@ -108,16 +129,25 @@ export default function Navbar() {
               </Link>
             ))}
             {session ? (
-              <>
-                <Link to="/my-bookings" style={{ fontSize: '.8rem', fontWeight: 500, letterSpacing: '.08em', textTransform: 'uppercase', color: linkColor, textDecoration: 'none', transition: 'color .3s' }}>
-                  My Bookings
-                </Link>
-                <span style={{ fontSize: '.8rem', fontWeight: 500, color: linkColor }}>Hi, {firstName}</span>
-              </>
+              <div ref={avatarRef} style={{ position: 'relative' }}>
+                <button onClick={() => setAvatarMenuOpen(o => !o)} aria-label="Account menu" style={{ width: 40, height: 40, borderRadius: '50%', background: 'var(--cu)', color: '#fff', border: 'none', cursor: 'pointer', fontFamily: '"Cormorant Garamond",serif', fontSize: '1.2rem', fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  {firstName.charAt(0).toUpperCase()}
+                </button>
+                {avatarMenuOpen && (
+                  <div style={{ position: 'absolute', top: 52, right: 0, minWidth: 180, background: 'var(--iv)', border: '1px solid var(--iv3)', boxShadow: '0 12px 40px rgba(61,21,32,.15)', zIndex: 110 }}>
+                    <Link to="/my-bookings" onClick={() => setAvatarMenuOpen(false)} style={{ display: 'block', padding: '14px 20px', fontSize: '.85rem', fontWeight: 500, color: 'var(--tx)', textDecoration: 'none', borderBottom: '1px solid var(--iv3)' }}>
+                      My Bookings
+                    </Link>
+                    <button onClick={signOut} style={{ display: 'block', width: '100%', textAlign: 'left', padding: '14px 20px', fontSize: '.85rem', fontWeight: 500, color: 'var(--m)', background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'Jost,sans-serif' }}>
+                      Sign Out
+                    </button>
+                  </div>
+                )}
+              </div>
             ) : (
-              <Link to="/enquiry?signin=1" style={{ fontSize: '.8rem', fontWeight: 500, letterSpacing: '.08em', textTransform: 'uppercase', color: linkColor, textDecoration: 'none', transition: 'color .3s' }}>
+              <button onClick={() => setShowSignIn(true)} style={{ background: 'none', border: 'none', fontSize: '.8rem', fontWeight: 500, letterSpacing: '.08em', textTransform: 'uppercase', color: 'var(--cu)', cursor: 'pointer', fontFamily: 'Jost,sans-serif' }}>
                 Sign In
-              </Link>
+              </button>
             )}
             <Link to="/enquiry" style={{ ...S.bookBtn }}>Book Your Event</Link>
           </div>
@@ -136,6 +166,8 @@ export default function Navbar() {
         }
         a:hover { opacity: .8; }
       `}</style>
+
+      <SignInModal open={showSignIn} onClose={() => setShowSignIn(false)} />
     </>
   )
 }

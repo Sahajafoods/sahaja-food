@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import type { Session } from '@supabase/supabase-js'
 import { supabase } from '../lib/supabase'
 import type { Enquiry } from '../lib/supabase'
-import GoogleIcon from '../components/GoogleIcon'
+import SignInModal from '../components/SignInModal'
 
 const STATUS_COLORS: Record<string, string> = {
   new: '#B8784A',
@@ -24,7 +24,8 @@ export default function MyBookings() {
   const navigate = useNavigate()
   const [loading, setLoading] = useState(true)
   const [session, setSession] = useState<Session | null>(null)
-  const [authLoading, setAuthLoading] = useState(false)
+  const [authChecked, setAuthChecked] = useState(false)
+  const [showSignIn, setShowSignIn] = useState(false)
   const [bookings, setBookings] = useState<Enquiry[]>([])
   const [dataLoading, setDataLoading] = useState(false)
 
@@ -33,10 +34,15 @@ export default function MyBookings() {
       setSession(s)
       if (s) loadBookings(s.user.id)
     }
-    supabase.auth.getSession().then(({ data }) => { handleSession(data.session); setLoading(false) })
+    supabase.auth.getSession().then(({ data }) => { handleSession(data.session); setLoading(false); setAuthChecked(true) })
     const { data: listener } = supabase.auth.onAuthStateChange((_event, s) => handleSession(s))
     return () => listener.subscription.unsubscribe()
   }, [])
+
+  // Requires sign-in: open the shared modal instead of a separate gate page
+  useEffect(() => {
+    if (authChecked && !session) setShowSignIn(true)
+  }, [authChecked, session])
 
   const loadBookings = async (userId: string) => {
     setDataLoading(true)
@@ -45,18 +51,9 @@ export default function MyBookings() {
     setDataLoading(false)
   }
 
-  const signInWithGoogle = async () => {
-    setAuthLoading(true)
-    await supabase.auth.signInWithOAuth({
-      provider: 'google',
-      options: { redirectTo: `${window.location.origin}/my-bookings`, queryParams: { prompt: 'select_account' } }
-    })
-  }
-
-  const signOut = async () => {
-    await supabase.auth.signOut()
-    setSession(null)
-    setBookings([])
+  const closeSignIn = () => {
+    setShowSignIn(false)
+    if (!session) navigate('/')
   }
 
   const bookAgain = (b: Enquiry) => {
@@ -83,23 +80,10 @@ export default function MyBookings() {
     </div>
   )
 
-  // ── NOT LOGGED IN ────────────────────────────────────────────────
+  // ── NOT LOGGED IN — the shared sign-in modal handles this, no separate gate page ──
   if (!session) return (
-    <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--iv)', padding: 24, paddingTop: 88 }}>
-      <div style={{ background: '#fff', border: '1px solid var(--iv3)', padding: 'clamp(36px,6vw,56px) clamp(28px,6vw,48px)', maxWidth: 420, width: '100%', boxShadow: '0 12px 60px rgba(61,21,32,.08)', textAlign: 'center' }}>
-        <div style={{ fontFamily: '"Cormorant Garamond",serif', fontSize: '2rem', fontWeight: 700, color: 'var(--m)', marginBottom: 8 }}>My Bookings</div>
-        <p style={{ fontSize: '.9rem', color: 'var(--tx2)', lineHeight: 1.6, marginBottom: 36 }}>
-          Sign in with Google to view your past enquiries and book again in one click.
-        </p>
-        <button onClick={signInWithGoogle} disabled={authLoading} style={{
-          width: '100%', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 12,
-          background: '#fff', color: 'var(--tx)', border: '1px solid var(--iv3)', padding: '15px 24px',
-          fontFamily: 'Jost,sans-serif', fontWeight: 600, fontSize: '.9rem', cursor: authLoading ? 'not-allowed' : 'pointer'
-        }}>
-          <GoogleIcon />
-          {authLoading ? 'Redirecting…' : 'Sign in with Google'}
-        </button>
-      </div>
+    <div style={{ minHeight: '100vh', background: 'var(--iv)' }}>
+      <SignInModal open={showSignIn} onClose={closeSignIn} />
     </div>
   )
 
@@ -107,16 +91,11 @@ export default function MyBookings() {
   return (
     <div style={{ minHeight: '100vh', background: 'var(--iv)', paddingTop: 88 }}>
       <div style={{ maxWidth: 1100, margin: '0 auto', padding: 'clamp(28px,5vw,48px) clamp(20px,5vw,32px)' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: 20, marginBottom: 36 }}>
-          <div>
-            <h1 style={{ fontFamily: '"Cormorant Garamond",serif', fontSize: 'clamp(1.9rem,4vw,2.6rem)', fontWeight: 700, color: 'var(--m)' }}>My Bookings</h1>
-            <p style={{ fontSize: '.85rem', color: 'var(--tx2)', marginTop: 4 }}>
-              {bookings.length} enquir{bookings.length === 1 ? 'y' : 'ies'} · signed in as {session.user.email}
-            </p>
-          </div>
-          <button onClick={signOut} style={{ padding: '11px 24px', border: '1px solid var(--m)', background: 'transparent', color: 'var(--m)', fontFamily: 'Jost,sans-serif', fontSize: '.78rem', fontWeight: 600, letterSpacing: '.08em', textTransform: 'uppercase', cursor: 'pointer' }}>
-            Sign Out
-          </button>
+        <div style={{ marginBottom: 36 }}>
+          <h1 style={{ fontFamily: '"Cormorant Garamond",serif', fontSize: 'clamp(1.9rem,4vw,2.6rem)', fontWeight: 700, color: 'var(--m)' }}>My Bookings</h1>
+          <p style={{ fontSize: '.85rem', color: 'var(--tx2)', marginTop: 4 }}>
+            {bookings.length} enquir{bookings.length === 1 ? 'y' : 'ies'} · signed in as {session.user.email}
+          </p>
         </div>
 
         {dataLoading ? (

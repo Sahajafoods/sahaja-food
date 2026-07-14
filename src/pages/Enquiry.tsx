@@ -1,9 +1,9 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import type { Session } from '@supabase/supabase-js'
 import { supabase } from '../lib/supabase'
 import { useReveal } from '../hooks/useReveal'
-import GoogleIcon from '../components/GoogleIcon'
+import SignInModal from '../components/SignInModal'
 
 const EVENT_TYPES = ['Wedding', 'Reception', 'Birthday Party', 'Naming Ceremony', 'Baby Shower', 'Housewarming', 'Corporate Lunch', 'Corporate Dinner', 'Team Outing', 'Engagement', 'Anniversary', 'Graduation Party', 'Kitty Party', 'Farewell', 'Religious Ceremony / Pooja', 'Festival Celebration', 'Other']
 const MENU_OPTIONS = ['Breakfast', 'Brunch', 'Lunch', 'Hi-Tea / Snacks', 'Dinner', 'Breakfast + Lunch', 'Lunch + Hi-Tea', 'Hi-Tea + Dinner', 'Lunch + Dinner', 'Breakfast + Lunch + Dinner', 'Full Day (All Meals)']
@@ -35,12 +35,10 @@ export default function Enquiry() {
   const upd = (k: string, v: string) => setForm(f => ({...f,[k]:v}))
 
   const [session, setSession] = useState<Session | null>(null)
-  const [authChecked, setAuthChecked] = useState(false)
-  const [authLoading, setAuthLoading] = useState(false)
-  const autoSignInTried = useRef(false)
+  const [showSignIn, setShowSignIn] = useState(false)
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data }) => { setSession(data.session); setAuthChecked(true) })
+    supabase.auth.getSession().then(({ data }) => setSession(data.session))
     const { data: listener } = supabase.auth.onAuthStateChange((_event, s) => setSession(s))
     return () => listener.subscription.unsubscribe()
   }, [])
@@ -52,25 +50,6 @@ export default function Enquiry() {
     const fullName: string | undefined = meta.full_name || meta.name
     setForm(f => ({ ...f, name: f.name || fullName || f.name, email: f.email || session.user.email || f.email }))
   }, [session])
-
-  const signInWithGoogle = async () => {
-    setAuthLoading(true)
-    sessionStorage.setItem(DRAFT_KEY, JSON.stringify(form))
-    await supabase.auth.signInWithOAuth({
-      provider: 'google',
-      options: { redirectTo: `${window.location.origin}/enquiry`, queryParams: { prompt: 'select_account' } }
-    })
-  }
-
-  // Auto-trigger Google sign-in when arriving via the Navbar's "Sign In" link (?signin=1)
-  useEffect(() => {
-    if (!authChecked || autoSignInTried.current || session) return
-    if (new URLSearchParams(location.search).get('signin') === '1') {
-      autoSignInTried.current = true
-      signInWithGoogle()
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [authChecked, session])
 
   const signOutOfGoogle = async () => {
     await supabase.auth.signOut()
@@ -126,10 +105,9 @@ export default function Enquiry() {
                 </>
               ) : (
                 <>
-                  <span style={{ fontSize:'.85rem', color:'var(--tx2)' }}>Have an account? Sign in to skip the typing.</span>
-                  <button type="button" onClick={signInWithGoogle} disabled={authLoading} style={{ display:'inline-flex', alignItems:'center', gap:10, background:'#fff', color:'var(--tx)', border:'1px solid var(--iv3)', padding:'10px 20px', fontFamily:'Jost,sans-serif', fontWeight:600, fontSize:'.82rem', cursor: authLoading ? 'not-allowed' : 'pointer' }}>
-                    <GoogleIcon size={16} />
-                    {authLoading ? 'Redirecting…' : 'Sign in with Google'}
+                  <span style={{ fontSize:'.85rem', color:'var(--tx2)' }}>Sign in to save your details</span>
+                  <button type="button" onClick={() => setShowSignIn(true)} style={{ background:'#fff', color:'var(--tx)', border:'1px solid var(--iv3)', padding:'10px 20px', fontFamily:'Jost,sans-serif', fontWeight:600, fontSize:'.82rem', cursor:'pointer' }}>
+                    Sign In
                   </button>
                 </>
               )}
@@ -205,6 +183,8 @@ export default function Enquiry() {
         @media(max-width:640px){ .form-row{grid-template-columns:1fr!important} }
         .ef:focus{ border-color:var(--cu)!important }
       `}</style>
+
+      <SignInModal open={showSignIn} onClose={() => setShowSignIn(false)} onBeforeSignIn={() => sessionStorage.setItem(DRAFT_KEY, JSON.stringify(form))} />
     </div>
   )
 }
