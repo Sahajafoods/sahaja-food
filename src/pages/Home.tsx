@@ -67,16 +67,22 @@ export default function Home() {
     <div>
       {/* ── HERO ── */}
       <section style={{ minHeight: '100vh', position: 'relative', display: 'flex', alignItems: 'flex-end', overflow: 'hidden' }}>
-        <div ref={bgRef} style={{ position: 'absolute', inset: 0, backgroundImage: "url('https://lhlqtrexevjgfhiszsak.supabase.co/storage/v1/object/public/Gallery/1.jpeg')", backgroundSize: 'cover', backgroundPosition: 'center' }} />
-        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(20,6,12,.98) 0%, rgba(20,6,12,.78) 38%, rgba(20,6,12,.45) 65%, rgba(20,6,12,.18) 100%), linear-gradient(to right, rgba(20,6,12,.5) 0%, transparent 60%)' }} />
+        <div ref={bgRef} style={{ position: 'absolute', inset: 0, backgroundImage: "url('https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1800&q=90&auto=format&fit=crop')", backgroundSize: 'cover', backgroundPosition: 'center' }} />
+        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(10,3,6,.97) 0%, rgba(10,3,6,.7) 40%, rgba(10,3,6,.3) 70%, transparent 100%), linear-gradient(to right, rgba(20,6,12,.5) 0%, transparent 60%)' }} />
         <div style={{ position: 'relative', zIndex: 2, maxWidth: 1280, margin: '0 auto', width: '100%', padding: '0 clamp(20px, 5vw, 48px) 96px' }}>
+          <div style={{ width: 60, height: 1, background: 'var(--cu)', marginBottom: 20, animation: 'fadeUp .8s .1s both', opacity: 0 }} />
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: 14, fontFamily: '"Cormorant Garamond",serif', fontStyle: 'italic', fontSize: '1.1rem', color: 'var(--cu2)', marginBottom: 24, animation: 'fadeUp .8s .3s both', opacity: 0 }}>
             <span style={{ display: 'block', width: 40, height: 1, background: 'var(--cu)' }} />
             Authentic South Indian Catering · Bangalore
           </div>
           <h1 style={{ fontFamily: '"Cormorant Garamond",serif', fontSize: 'clamp(3.2rem,7vw,6.5rem)', fontWeight: 700, lineHeight: 1.0, color: '#fff', marginBottom: 10, maxWidth: 820, animation: 'fadeUp .9s .5s both', opacity: 0 }}>
-            Food that tastes<br/>exactly like<br/><em style={{ fontStyle: 'italic', color: 'var(--cu2)' }}>home.</em>
+            Food that feels like home.<br/>Made for every<br/><em style={{ fontStyle: 'italic', color: 'var(--cu2)' }}>celebration.</em>
           </h1>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 16, margin: '28px 0', animation: 'fadeUp .8s .6s both', opacity: 0 }}>
+            <span style={{ width: 32, height: 1, background: 'var(--cu)', display: 'block' }} />
+            <span style={{ color: 'var(--cu2)', fontSize: '1.2rem' }}>✦</span>
+            <span style={{ width: 32, height: 1, background: 'var(--cu)', display: 'block' }} />
+          </div>
           <p style={{ fontFamily: '"Cormorant Garamond",serif', fontStyle: 'italic', fontSize: '1.3rem', color: 'rgba(255,255,255,.7)', marginBottom: 52, animation: 'fadeUp .8s .7s both', opacity: 0 }}>
             Freshly prepared Veg &amp; Non-Veg South Indian meals<br/>for weddings, celebrations and corporate events.
           </p>
@@ -90,10 +96,12 @@ export default function Home() {
               <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7"/></svg>
             </Link>
           </div>
-          <div ref={statsRef} style={{ marginTop: 60, display: 'flex', border: '1px solid rgba(255,255,255,.08)', overflow: 'hidden', width: 'fit-content', animation: 'fadeUp .8s 1.1s both', opacity: 0 }} className="hero-stats-wrap">
+          <div ref={statsRef} style={{ marginTop: 60, display: 'flex', alignItems: 'center', animation: 'fadeUp .8s 1.1s both', opacity: 0 }} className="hero-stats-wrap">
             <div style={hstatStyle}><span style={hstatN}>{count}+</span><span style={hstatL}>Events Celebrated</span></div>
+            <span style={{ width: 1, height: 40, background: 'var(--cu)', opacity: .4, margin: '0 32px', flexShrink: 0 }} className="hero-stat-divider" />
             <div style={hstatStyle}><span style={hstatN}>100%</span><span style={hstatL}>Fresh Daily</span></div>
-            <div style={{ ...hstatStyle, borderRight: 'none' }}><span style={hstatN}>50–500</span><span style={hstatL}>Guests Served</span></div>
+            <span style={{ width: 1, height: 40, background: 'var(--cu)', opacity: .4, margin: '0 32px', flexShrink: 0 }} className="hero-stat-divider" />
+            <div style={hstatStyle}><span style={hstatN}>50–500</span><span style={hstatL}>Guests Served</span></div>
           </div>
         </div>
         {/* Scroll indicator */}
@@ -263,7 +271,8 @@ export default function Home() {
           .gallery-grid { column-count: 2 !important; }
         }
         @media(max-width:768px){
-          .hero-stats-wrap { flex-direction: column !important; width: 100% !important; }
+          .hero-stats-wrap { flex-direction: column !important; align-items: flex-start !important; width: 100% !important; gap: 16px; }
+          .hero-stat-divider { display: none !important; }
           .mob-sticky-book { display: block !important; }
           section[id="how"] > div > div[style*="grid-template-columns"] { grid-template-columns: 1fr 1fr !important; }
           .gallery-grid { column-count: 1 !important; }
@@ -305,6 +314,6 @@ const bodyLg: React.CSSProperties = { fontSize: '1.05rem', color: 'var(--tx2)', 
 const btnPrimary: React.CSSProperties = { display: 'inline-flex', alignItems: 'center', gap: 10, background: 'var(--m)', color: '#fff', padding: '18px 38px', fontFamily: 'Jost,sans-serif', fontWeight: 600, fontSize: '.85rem', letterSpacing: '.1em', textTransform: 'uppercase', textDecoration: 'none', boxShadow: '0 6px 28px rgba(61,21,32,.5)', transition: 'background .3s' }
 const btnGhost: React.CSSProperties = { display: 'inline-flex', alignItems: 'center', gap: 10, border: '1px solid rgba(255,255,255,.3)', color: 'rgba(255,255,255,.88)', padding: '17px 32px', fontFamily: 'Jost,sans-serif', fontWeight: 500, fontSize: '.85rem', letterSpacing: '.1em', textTransform: 'uppercase', textDecoration: 'none' }
 const btnMaroon: React.CSSProperties = { display: 'inline-flex', alignItems: 'center', gap: 10, background: 'var(--m)', color: '#fff', padding: '16px 36px', fontFamily: 'Jost,sans-serif', fontWeight: 600, fontSize: '.82rem', letterSpacing: '.1em', textTransform: 'uppercase', textDecoration: 'none', transition: 'background .3s' }
-const hstatStyle: React.CSSProperties = { padding: '20px 36px', borderRight: '1px solid rgba(255,255,255,.08)' }
+const hstatStyle: React.CSSProperties = { padding: '4px 0' }
 const hstatN: React.CSSProperties = { fontFamily: '"Cormorant Garamond",serif', fontSize: '2.4rem', fontWeight: 700, color: 'var(--cu2)', lineHeight: 1, display: 'block' }
 const hstatL: React.CSSProperties = { fontSize: '.72rem', fontWeight: 500, letterSpacing: '.1em', textTransform: 'uppercase', color: 'rgba(255,255,255,.38)', marginTop: 5, display: 'block' }

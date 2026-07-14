@@ -92,7 +92,7 @@ export default function Navbar() {
         }}>
           <button onClick={() => setMobOpen(false)} style={{ position: 'absolute', top: 28, right: 32, background: 'none', border: 'none', color: 'rgba(255,255,255,.5)', fontSize: '2rem', cursor: 'pointer' }}>✕</button>
           <img src="/Sahaja_Logo.png" alt="Sahaja" style={{ width: 72, height: 72, objectFit: 'contain', opacity: .8, marginBottom: 8 }} />
-          {[['/', 'Home'], ['/menu', 'Menu'], ['/about', 'About'], ['/enquiry', 'Book Event']].map(([path, label]) => (
+          {[['/', 'Home'], ['/menu', 'Menu'], ['/about', 'About'], ['/gallery', 'Gallery'], ['/enquiry', 'Book Event']].map(([path, label]) => (
             <Link key={path} to={path} style={{ fontFamily: '"Cormorant Garamond", serif', fontSize: '2.4rem', fontWeight: 600, color: 'rgba(255,255,255,.88)', textDecoration: 'none', letterSpacing: '.06em' }}>{label}</Link>
           ))}
           {session ? (
@@ -123,7 +123,7 @@ export default function Navbar() {
 
           {/* Desktop links */}
           <div style={S.links} className="desktop-nav">
-            {['/menu', '/about'].map((path) => (
+            {['/menu', '/about', '/gallery'].map((path) => (
               <Link key={path} to={path} style={{ fontSize: '.8rem', fontWeight: 500, letterSpacing: '.08em', textTransform: 'uppercase', color: linkColor, textDecoration: 'none', transition: 'color .3s' }}>
                 {path.slice(1)}
               </Link>

@@ -5,6 +5,7 @@ import WhatsAppFloat from './components/WhatsAppFloat'
 import Home from './pages/Home'
 import Menu from './pages/Menu'
 import About from './pages/About'
+import Gallery from './pages/Gallery'
 import Enquiry from './pages/Enquiry'
 import ThankYou from './pages/ThankYou'
 import Admin from './pages/Admin'
@@ -18,6 +19,7 @@ export default function App() {
         <Route path="/" element={<Home />} />
         <Route path="/menu" element={<Menu />} />
         <Route path="/about" element={<About />} />
+        <Route path="/gallery" element={<Gallery />} />
         <Route path="/enquiry" element={<Enquiry />} />
         <Route path="/thank-you" element={<ThankYou />} />
         <Route path="/admin" element={<Admin />} />

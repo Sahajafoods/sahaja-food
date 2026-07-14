@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useReveal } from '../hooks/useReveal'
+import Lightbox, { LightboxItem } from '../components/Lightbox'
 
 type TabKey = 'nonveg' | 'veg' | 'healthy'
 
@@ -41,14 +42,29 @@ const PROTEIN_BOX = {
   includes: ['Fruit Portion', 'Salad'],
 }
 
-function ComboCard({ combo, delay }: { combo: { name: string; items: string[]; img: string }; delay: number }) {
+function ExpandIcon() {
   return (
-    <div style={{ position: 'relative', overflow: 'hidden', aspectRatio: '4/5', background: 'var(--iv2)' }} className={`reveal d${delay}`}
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M8 3H5a2 2 0 00-2 2v3m18 0V5a2 2 0 00-2-2h-3m0 18h3a2 2 0 002-2v-3M3 16v3a2 2 0 002 2h3" />
+    </svg>
+  )
+}
+
+function ComboCard({ combo, delay, onOpen }: { combo: { name: string; items: string[]; img: string }; delay: number; onOpen: () => void }) {
+  return (
+    <div style={{ position: 'relative', overflow: 'hidden', aspectRatio: '4/5', background: 'var(--iv2)', cursor: 'pointer' }} className={`combo-card reveal d${delay}`}
+      onClick={onOpen}
       onMouseEnter={e => { const img = (e.currentTarget as HTMLElement).querySelector('img') as HTMLElement; if (img) img.style.transform = 'scale(1.07)' }}
       onMouseLeave={e => { const img = (e.currentTarget as HTMLElement).querySelector('img') as HTMLElement; if (img) img.style.transform = 'scale(1)' }}
     >
       <img src={combo.img} alt={combo.name} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', transition: 'transform .5s ease' }} loading="lazy" onError={onImgError} />
       <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top,rgba(20,6,12,.92) 0%,rgba(20,6,12,.4) 55%,transparent 100%)' }} />
+      <div className="combo-card-hint" style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: 8, opacity: 0, transition: 'opacity .3s', pointerEvents: 'none' }}>
+        <div style={{ width: 56, height: 56, borderRadius: '50%', background: 'rgba(0,0,0,.35)', border: '1px solid rgba(255,255,255,.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff' }}>
+          <ExpandIcon />
+        </div>
+        <span style={{ fontSize: '.68rem', fontWeight: 600, letterSpacing: '.1em', textTransform: 'uppercase', color: '#fff' }}>Click to view</span>
+      </div>
       <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '28px 28px 32px' }}>
         <div style={{ fontFamily: '"Cormorant Garamond",serif', fontSize: '1.5rem', fontWeight: 700, color: '#fff', marginBottom: 14 }}>{combo.name}</div>
         <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 7 }}>
@@ -64,9 +80,23 @@ function ComboCard({ combo, delay }: { combo: { name: string; items: string[]; i
   )
 }
 
+function SpreadBanner({ img, title, subtitle }: { img: string; title: string; subtitle: string }) {
+  return (
+    <div style={{ position: 'relative', height: 500, overflow: 'hidden' }} className="reveal">
+      <img src={img} alt={title} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} loading="lazy" onError={onImgError} />
+      <div style={{ position: 'absolute', inset: 0, background: 'var(--m)', opacity: .5 }} />
+      <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', padding: '0 24px' }}>
+        <div style={{ fontFamily: '"Cormorant Garamond",serif', fontSize: 'clamp(2.4rem,5vw,4rem)', fontWeight: 700, color: '#fff', marginBottom: 16 }}>{title}</div>
+        <div style={{ fontFamily: '"Cormorant Garamond",serif', fontStyle: 'italic', fontSize: '1.15rem', color: 'rgba(255,255,255,.88)', maxWidth: 520 }}>{subtitle}</div>
+      </div>
+    </div>
+  )
+}
+
 export default function Menu() {
   useReveal()
   const [tab, setTab] = useState<TabKey>('nonveg')
+  const [lightboxItem, setLightboxItem] = useState<LightboxItem | null>(null)
   const combos = COMBOS[tab]
 
   return (
@@ -90,12 +120,22 @@ export default function Menu() {
         </div>
       </div>
 
-      <section style={{ background: '#fff', padding: '72px clamp(20px, 5vw, 48px) 0' }}>
-        <div style={{ maxWidth: 1280, margin: '0 auto' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(min(100%,300px),1fr))', gap: 20, marginBottom: 96 }}>
-            {combos.map((c, i) => <ComboCard key={c.name} combo={c} delay={(i % 3) + 1} />)}
+      <section style={{ background: '#fff', paddingTop: 72 }}>
+        <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 clamp(20px, 5vw, 48px)' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(min(100%,300px),1fr))', gap: 20 }}>
+            {combos.map((c, i) => (
+              <ComboCard key={c.name} combo={c} delay={(i % 3) + 1} onOpen={() => setLightboxItem({ src: c.img, alt: c.name, name: c.name, items: c.items })} />
+            ))}
           </div>
+        </div>
 
+        {/* ── FULL-BLEED SPREAD BANNERS ── */}
+        <div style={{ marginTop: 96 }}>
+          <SpreadBanner img="https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=1600&q=90&auto=format&fit=crop" title="Pure Vegetarian" subtitle="Freshly prepared with the finest ingredients, every single day" />
+          <SpreadBanner img="https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?w=1600&q=90&auto=format&fit=crop" title="Non Vegetarian" subtitle="Bold flavours, tender meats, made the day of your event" />
+        </div>
+
+        <div style={{ maxWidth: 1280, margin: '0 auto', padding: '96px clamp(20px, 5vw, 48px) 0' }}>
           {/* ── OUR SPECIALS ── */}
           <div style={{ marginBottom: 96 }}>
             <div style={{ display: 'inline-flex', alignItems: 'center', gap: 12, fontFamily: '"Cormorant Garamond",serif', fontStyle: 'italic', fontSize: '1rem', color: 'var(--cu)', marginBottom: 16 }} className="reveal">
@@ -162,7 +202,10 @@ export default function Menu() {
         @media(max-width:480px){
           .menu-tabs button{padding:11px 16px!important;font-size:.7rem!important}
         }
+        .combo-card:hover .combo-card-hint{opacity:1!important}
       `}</style>
+
+      <Lightbox item={lightboxItem} onClose={() => setLightboxItem(null)} />
     </div>
   )
 }
