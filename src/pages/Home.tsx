@@ -21,6 +21,16 @@ const NONVEG_DISHES = [
   { name: 'Chicken Chettinad', desc: 'Freshly ground Chettinad masala. Fiery, fragrant, unforgettable.', price: '₹160', img: 'https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?w=700&q=80&auto=format&fit=crop' },
 ]
 
+const GALLERY_IMAGES = [
+  'https://lhlqtrexevjgfhiszsak.supabase.co/storage/v1/object/public/Gallery/1.jpeg',
+  'https://lhlqtrexevjgfhiszsak.supabase.co/storage/v1/object/public/Gallery/2.png',
+  'https://lhlqtrexevjgfhiszsak.supabase.co/storage/v1/object/public/Gallery/3.png',
+  'https://lhlqtrexevjgfhiszsak.supabase.co/storage/v1/object/public/Gallery/4.png',
+  'https://lhlqtrexevjgfhiszsak.supabase.co/storage/v1/object/public/Gallery/6.jpg',
+  'https://lhlqtrexevjgfhiszsak.supabase.co/storage/v1/object/public/Gallery/7.jpg',
+  'https://lhlqtrexevjgfhiszsak.supabase.co/storage/v1/object/public/Gallery/9.jpeg',
+]
+
 const TESTI = [
   { q: "The biryani was the highlight of our daughter's wedding. Every single guest asked who the caterer was. We've already booked Sahaja for the next event.", name: 'Ramesh K.', ev: 'Wedding · 300 guests', init: 'R' },
   { q: "Food arrived on time, piping hot, genuinely home-cooked quality. Our team has been asking for a repeat ever since. Exceptional service throughout.", name: 'Priya M.', ev: 'Corporate lunch · 80 guests', init: 'P' },
@@ -63,7 +73,7 @@ export default function Home() {
     <div>
       {/* ── HERO ── */}
       <section style={{ minHeight: '100vh', position: 'relative', display: 'flex', alignItems: 'flex-end', overflow: 'hidden' }}>
-        <div ref={bgRef} style={{ position: 'absolute', inset: 0, backgroundImage: "url('https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=1800&q=90&auto=format&fit=crop')", backgroundSize: 'cover', backgroundPosition: 'center' }} />
+        <div ref={bgRef} style={{ position: 'absolute', inset: 0, backgroundImage: "url('https://lhlqtrexevjgfhiszsak.supabase.co/storage/v1/object/public/Gallery/1.jpeg')", backgroundSize: 'cover', backgroundPosition: 'center' }} />
         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(20,6,12,.98) 0%, rgba(20,6,12,.78) 38%, rgba(20,6,12,.45) 65%, rgba(20,6,12,.18) 100%), linear-gradient(to right, rgba(20,6,12,.5) 0%, transparent 60%)' }} />
         <div style={{ position: 'relative', zIndex: 2, maxWidth: 1280, margin: '0 auto', width: '100%', padding: '0 clamp(20px, 5vw, 48px) 96px' }}>
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: 14, fontFamily: '"Cormorant Garamond",serif', fontStyle: 'italic', fontSize: '1.1rem', color: 'var(--cu2)', marginBottom: 24, animation: 'fadeUp .8s .3s both', opacity: 0 }}>
@@ -233,6 +243,23 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ── GALLERY ── */}
+      <section style={{ background: 'var(--iv)', padding: 'clamp(64px, 10vw, 112px) clamp(20px, 5vw, 48px)' }} id="gallery">
+        <div style={{ maxWidth: 1280, margin: '0 auto' }}>
+          <div style={{ maxWidth: 640, marginBottom: 56 }} className="reveal">
+            <div style={eyebrow}>Our Events</div>
+            <h2 style={h2}>Food made for real <em style={{ fontStyle: 'italic', color: 'var(--m)' }}>celebrations</em></h2>
+          </div>
+          <div className="gallery-grid">
+            {GALLERY_IMAGES.map((src, i) => (
+              <div key={src} className="gallery-item reveal">
+                <img src={src} alt={`Sahaja Food event ${i + 1}`} loading="lazy" />
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Mobile sticky book */}
       <a href="/enquiry" style={{ display: 'none', position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 90, background: 'var(--m)', color: '#fff', padding: 18, textAlign: 'center', fontFamily: 'Jost,sans-serif', fontSize: '.85rem', fontWeight: 600, letterSpacing: '.12em', textTransform: 'uppercase', boxShadow: '0 -4px 24px rgba(61,21,32,.3)', textDecoration: 'none' }} className="mob-sticky-book">
         Book Your Event →
@@ -247,17 +274,23 @@ export default function Home() {
         .about-band { grid-template-columns: 1fr 1fr; }
         .steps-grid { grid-template-columns: repeat(4,1fr); }
         .testi-grid { grid-template-columns: repeat(3,1fr); }
+        .gallery-grid { column-count: 3; column-gap: 20px; }
+        .gallery-item { break-inside: avoid; margin-bottom: 20px; overflow: hidden; position: relative; }
+        .gallery-item img { width: 100%; height: auto; display: block; transition: transform .6s ease; }
+        .gallery-item:hover img { transform: scale(1.06); }
         @media(max-width:1100px){
           .about-band { grid-template-columns: 1fr !important; }
           .steps-grid { grid-template-columns: 1fr 1fr !important; gap: 48px !important; }
           .steps-line { display: none !important; }
           .testi-grid { grid-template-columns: 1fr 1fr !important; }
+          .gallery-grid { column-count: 2 !important; }
         }
         @media(max-width:768px){
           .hero-stats-wrap { flex-direction: column !important; width: 100% !important; }
           .testi-grid { grid-template-columns: 1fr !important; }
           .mob-sticky-book { display: block !important; }
           section[id="how"] > div > div[style*="grid-template-columns"] { grid-template-columns: 1fr 1fr !important; }
+          .gallery-grid { column-count: 1 !important; }
         }
         @media(max-width:480px){
           section[id="how"] > div > div[style*="grid-template-columns"] { grid-template-columns: 1fr !important; }
