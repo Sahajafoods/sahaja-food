@@ -28,7 +28,7 @@ export default function Footer() {
           {[
             { title: 'Menu', links: [['Menu', '/menu'], ['Non-Veg', '/menu'], ['Enquiry', '/enquiry']] },
             { title: 'Company', links: [['About', '/about'], ['Reviews', '/#testimonials'], ['Contact', '/enquiry']] },
-            { title: 'Contact', links: [['97319 10575', 'tel:+919731910575'], ['hello@sahaja.food', 'mailto:hello@sahaja.food']] },
+            { title: 'Contact', links: [['97319 10575', 'tel:+919731910575'], ['enquiry@sahaja.food', 'mailto:enquiry@sahaja.food']] },
           ].map(col => (
             <div key={col.title}>
               <div style={{ fontSize: '.68rem', fontWeight: 700, letterSpacing: '.14em', textTransform: 'uppercase', color: 'rgba(255,255,255,.25)', marginBottom: 20 }}>{col.title}</div>

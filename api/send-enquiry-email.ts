@@ -53,10 +53,9 @@ export default async function handler(req: Request) {
     })
 
   try {
-    await Promise.all([
-      send(email, '✅ Enquiry Received — Sahaja Food', clientHtml),
-      send(ADMIN_EMAIL, `🔔 New Enquiry — ${name} · ${event_type} · ${guest_count} guests`, adminHtml)
-    ])
+    const sends = [send(ADMIN_EMAIL, `🔔 New Enquiry — ${name} · ${event_type} · ${guest_count} guests`, adminHtml)]
+    if (email) sends.push(send(email, '✅ Enquiry Received — Sahaja Food', clientHtml))
+    await Promise.all(sends)
     return new Response(JSON.stringify({ ok: true }), { status: 200, headers: { 'Content-Type': 'application/json' } })
   } catch {
     return new Response(JSON.stringify({ error: 'Email failed' }), { status: 500 })

@@ -4,7 +4,7 @@ import { supabase } from '../lib/supabase'
 import { useReveal } from '../hooks/useReveal'
 
 const EVENT_TYPES = ['Wedding', 'Reception', 'Birthday Party', 'Naming Ceremony', 'Baby Shower', 'Housewarming', 'Corporate Lunch', 'Corporate Dinner', 'Team Outing', 'Engagement', 'Anniversary', 'Graduation Party', 'Kitty Party', 'Farewell', 'Religious Ceremony / Pooja', 'Festival Celebration', 'Other']
-const MENU_OPTIONS = ['Breakfast', 'Lunch', 'Dinner', 'Breakfast + Lunch', 'Lunch + Dinner', 'Breakfast + Lunch + Dinner']
+const MENU_OPTIONS = ['Breakfast', 'Brunch', 'Lunch', 'Hi-Tea / Snacks', 'Dinner', 'Breakfast + Lunch', 'Lunch + Hi-Tea', 'Hi-Tea + Dinner', 'Lunch + Dinner', 'Breakfast + Lunch + Dinner', 'Full Day (All Meals)']
 const GUEST_COUNTS = ['Up to 50', '50–100', '100–150', '150–200', '200–300', '300–400', '400–500', '500+']
 
 export default function Enquiry() {
@@ -21,7 +21,10 @@ export default function Enquiry() {
       if (error) throw error
       fetch('/api/send-enquiry-email', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(form) }).catch(()=>{})
       navigate('/thank-you')
-    } catch { alert('Something went wrong. Please WhatsApp us directly at +91 97319 10575.') }
+    } catch (err) {
+      console.error('Enquiry submit failed:', err)
+      alert('Something went wrong. Please WhatsApp us directly at +91 97319 10575.')
+    }
     finally { setLoading(false) }
   }
 
@@ -43,7 +46,7 @@ export default function Enquiry() {
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.4fr', gap: 96, alignItems: 'start' }} className="enq-grid">
           <div style={{ position: 'sticky', top: 100 }} className="reveal-l">
             <p style={{ fontSize: '.95rem', color: 'var(--tx2)', lineHeight: 1.85, marginBottom: 40 }}>Tell us about your celebration and we'll get back within a few hours with a confirmation and quote. No pressure, no commitment upfront.</p>
-            {[['📱','WhatsApp','+91 97319 10575'],['✉️','Email','hello@sahaja.food'],['📍','Serving','Bangalore & surrounding areas']].map(([icon,label,val]) => (
+            {[['📱','WhatsApp','+91 97319 10575'],['✉️','Email','enquiry@sahaja.food'],['📍','Serving','Bangalore & surrounding areas']].map(([icon,label,val]) => (
               <div key={label} style={{ display:'flex', alignItems:'flex-start', gap:16, marginBottom:22 }}>
                 <div style={{ width:48, height:48, flexShrink:0, background:'rgba(61,21,32,.07)', display:'flex', alignItems:'center', justifyContent:'center', fontSize:'1.1rem' }}>{icon}</div>
                 <div><div style={{ fontFamily:'"Cormorant Garamond",serif', fontSize:'1rem', fontWeight:600, color:'var(--tx)' }}>{label}</div><div style={{ fontSize:'.85rem', color:'var(--tx2)', marginTop:2 }}>{val}</div></div>
@@ -65,7 +68,7 @@ export default function Enquiry() {
               <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:22 }} className="form-row">
                 <div {...field('Email')}>
                   <label style={lbl}>Email</label>
-                  <input className="ef" style={fi} type="email" placeholder="you@example.com" value={form.email} onChange={e=>upd('email',e.target.value)} required/>
+                  <input className="ef" style={fi} type="email" placeholder="you@example.com" value={form.email} onChange={e=>upd('email',e.target.value)}/>
                 </div>
                 <div {...field('Event Type')}>
                   <label style={lbl}>Event Type</label>
