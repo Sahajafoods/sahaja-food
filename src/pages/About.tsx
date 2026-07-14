@@ -36,7 +36,8 @@ export default function About() {
             </div>
             <div className="reveal-r about-hero-photo" style={{ display: 'flex', justifyContent: 'center' }}>
               <div style={{ border: '8px solid rgba(255,255,255,.92)', boxShadow: '0 24px 64px rgba(0,0,0,.35)', maxWidth: 360, width: '100%' }}>
-                <img src={FOUNDER_PHOTO} alt="Nandini P, Founder of Sahaja Food" style={{ display: 'block', width: '100%', aspectRatio: '4/5', objectFit: 'cover' }} />
+                {/* Actual photo is 1760x2420 (portrait, ratio ~0.727) — match that ratio exactly so nothing gets cropped */}
+                <img src={FOUNDER_PHOTO} alt="Nandini P, Founder of Sahaja Food" style={{ display: 'block', width: '100%', height: 'auto', aspectRatio: '1760/2420', objectFit: 'cover', objectPosition: 'top' }} />
               </div>
             </div>
           </div>
