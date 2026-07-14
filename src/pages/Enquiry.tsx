@@ -1,23 +1,86 @@
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useEffect, useRef, useState } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
+import type { Session } from '@supabase/supabase-js'
 import { supabase } from '../lib/supabase'
 import { useReveal } from '../hooks/useReveal'
+import GoogleIcon from '../components/GoogleIcon'
 
 const EVENT_TYPES = ['Wedding', 'Reception', 'Birthday Party', 'Naming Ceremony', 'Baby Shower', 'Housewarming', 'Corporate Lunch', 'Corporate Dinner', 'Team Outing', 'Engagement', 'Anniversary', 'Graduation Party', 'Kitty Party', 'Farewell', 'Religious Ceremony / Pooja', 'Festival Celebration', 'Other']
 const MENU_OPTIONS = ['Breakfast', 'Brunch', 'Lunch', 'Hi-Tea / Snacks', 'Dinner', 'Breakfast + Lunch', 'Lunch + Hi-Tea', 'Hi-Tea + Dinner', 'Lunch + Dinner', 'Breakfast + Lunch + Dinner', 'Full Day (All Meals)']
 const GUEST_COUNTS = ['Up to 50', '50–100', '100–150', '150–200', '200–300', '300–400', '400–500', '500+']
+const DRAFT_KEY = 'sahaja_enquiry_draft'
+
+type FormState = {
+  name: string; phone: string; email: string; event_type: string; event_date: string
+  event_time: string; menu_preference: string; guest_count: string; location: string; message: string
+}
+const EMPTY_FORM: FormState = { name:'', phone:'', email:'', event_type:'', event_date:'', event_time:'', menu_preference:'', guest_count:'', location:'', message:'' }
+
+const buildInitialForm = (prefill?: Partial<FormState>): FormState => {
+  const draftRaw = sessionStorage.getItem(DRAFT_KEY)
+  if (draftRaw) {
+    sessionStorage.removeItem(DRAFT_KEY)
+    try { return { ...EMPTY_FORM, ...JSON.parse(draftRaw) } } catch { /* ignore malformed draft */ }
+  }
+  return prefill ? { ...EMPTY_FORM, ...prefill } : EMPTY_FORM
+}
 
 export default function Enquiry() {
   useReveal()
   const navigate = useNavigate()
+  const location = useLocation()
+  const prefill = (location.state as { prefill?: Partial<FormState> } | null)?.prefill
   const [loading, setLoading] = useState(false)
-  const [form, setForm] = useState({ name:'', phone:'', email:'', event_type:'', event_date:'', event_time:'', menu_preference:'', guest_count:'', location:'', message:'' })
+  const [form, setForm] = useState<FormState>(() => buildInitialForm(prefill))
   const upd = (k: string, v: string) => setForm(f => ({...f,[k]:v}))
+
+  const [session, setSession] = useState<Session | null>(null)
+  const [authChecked, setAuthChecked] = useState(false)
+  const [authLoading, setAuthLoading] = useState(false)
+  const autoSignInTried = useRef(false)
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data }) => { setSession(data.session); setAuthChecked(true) })
+    const { data: listener } = supabase.auth.onAuthStateChange((_event, s) => setSession(s))
+    return () => listener.subscription.unsubscribe()
+  }, [])
+
+  // Pre-fill Name/Email from the Google profile, without overwriting values already typed or restored
+  useEffect(() => {
+    if (!session) return
+    const meta = session.user.user_metadata || {}
+    const fullName: string | undefined = meta.full_name || meta.name
+    setForm(f => ({ ...f, name: f.name || fullName || f.name, email: f.email || session.user.email || f.email }))
+  }, [session])
+
+  const signInWithGoogle = async () => {
+    setAuthLoading(true)
+    sessionStorage.setItem(DRAFT_KEY, JSON.stringify(form))
+    await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: { redirectTo: `${window.location.origin}/enquiry`, queryParams: { prompt: 'select_account' } }
+    })
+  }
+
+  // Auto-trigger Google sign-in when arriving via the Navbar's "Sign In" link (?signin=1)
+  useEffect(() => {
+    if (!authChecked || autoSignInTried.current || session) return
+    if (new URLSearchParams(location.search).get('signin') === '1') {
+      autoSignInTried.current = true
+      signInWithGoogle()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [authChecked, session])
+
+  const signOutOfGoogle = async () => {
+    await supabase.auth.signOut()
+    setSession(null)
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault(); setLoading(true)
     try {
-      const { error } = await supabase.from('enquiries').insert(form)
+      const { error } = await supabase.from('enquiries').insert({ ...form, user_id: session?.user.id ?? null })
       if (error) throw error
       localStorage.setItem('sahaja_last_enquiry', JSON.stringify({ event_type: form.event_type, event_date: form.event_date, guest_count: form.guest_count }))
       fetch('/api/send-enquiry-email', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(form) }).catch(()=>{})
@@ -55,6 +118,22 @@ export default function Enquiry() {
             ))}
           </div>
           <div style={{ background:'#fff', padding:'clamp(24px, 5vw, 56px)', boxShadow:'0 12px 72px rgba(61,21,32,.09)', border:'1px solid var(--iv3)' }} className="reveal-r">
+            <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', flexWrap:'wrap', gap:12, padding:'16px 20px', marginBottom:28, border:'1px solid var(--iv3)', background: session ? 'rgba(42,96,64,.05)' : 'var(--iv)' }}>
+              {session ? (
+                <>
+                  <span style={{ fontSize:'.85rem', color:'var(--tx2)' }}>Signed in as <strong style={{ color:'var(--tx)' }}>{session.user.email}</strong></span>
+                  <button type="button" onClick={signOutOfGoogle} style={{ background:'none', border:'none', color:'var(--m)', fontFamily:'Jost,sans-serif', fontSize:'.78rem', fontWeight:600, textTransform:'uppercase', letterSpacing:'.06em', cursor:'pointer' }}>Sign out</button>
+                </>
+              ) : (
+                <>
+                  <span style={{ fontSize:'.85rem', color:'var(--tx2)' }}>Have an account? Sign in to skip the typing.</span>
+                  <button type="button" onClick={signInWithGoogle} disabled={authLoading} style={{ display:'inline-flex', alignItems:'center', gap:10, background:'#fff', color:'var(--tx)', border:'1px solid var(--iv3)', padding:'10px 20px', fontFamily:'Jost,sans-serif', fontWeight:600, fontSize:'.82rem', cursor: authLoading ? 'not-allowed' : 'pointer' }}>
+                    <GoogleIcon size={16} />
+                    {authLoading ? 'Redirecting…' : 'Sign in with Google'}
+                  </button>
+                </>
+              )}
+            </div>
             <form onSubmit={handleSubmit}>
               <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:22 }} className="form-row">
                 <div {...field('Full Name')}>

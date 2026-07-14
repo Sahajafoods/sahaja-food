@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
+import type { Session } from '@supabase/supabase-js'
+import { supabase } from '../lib/supabase'
 
 const S: Record<string, React.CSSProperties> = {
   nav: {
@@ -33,6 +35,7 @@ const S: Record<string, React.CSSProperties> = {
 export default function Navbar() {
   const [solid, setSolid] = useState(false)
   const [mobOpen, setMobOpen] = useState(false)
+  const [session, setSession] = useState<Session | null>(null)
   const location = useLocation()
   const isHome = location.pathname === '/'
 
@@ -43,6 +46,16 @@ export default function Navbar() {
   }, [])
 
   useEffect(() => { setMobOpen(false) }, [location])
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data }) => setSession(data.session))
+    const { data: listener } = supabase.auth.onAuthStateChange((_event, s) => setSession(s))
+    return () => listener.subscription.unsubscribe()
+  }, [])
+
+  const firstName = session
+    ? (session.user.user_metadata?.full_name || session.user.user_metadata?.name || session.user.email || 'there').split(' ')[0].split('@')[0]
+    : ''
 
   const nameColor = (!isHome || solid) ? 'var(--m)' : '#fff'
   const tagColor = (!isHome || solid) ? 'var(--cu)' : 'rgba(255,255,255,.6)'
@@ -62,6 +75,14 @@ export default function Navbar() {
           {[['/', 'Home'], ['/menu', 'Menu'], ['/about', 'About'], ['/enquiry', 'Book Event']].map(([path, label]) => (
             <Link key={path} to={path} style={{ fontFamily: '"Cormorant Garamond", serif', fontSize: '2.4rem', fontWeight: 600, color: 'rgba(255,255,255,.88)', textDecoration: 'none', letterSpacing: '.06em' }}>{label}</Link>
           ))}
+          {session ? (
+            <Link to="/my-bookings" style={{ fontFamily: '"Cormorant Garamond", serif', fontSize: '2.4rem', fontWeight: 600, color: 'rgba(255,255,255,.88)', textDecoration: 'none', letterSpacing: '.06em' }}>My Bookings</Link>
+          ) : (
+            <Link to="/enquiry?signin=1" style={{ fontFamily: '"Cormorant Garamond", serif', fontSize: '2.4rem', fontWeight: 600, color: 'rgba(255,255,255,.88)', textDecoration: 'none', letterSpacing: '.06em' }}>Sign In</Link>
+          )}
+          {session && (
+            <span style={{ fontFamily: '"Cormorant Garamond", serif', fontStyle: 'italic', fontSize: '1.1rem', color: 'var(--cu2)' }}>Hi, {firstName}</span>
+          )}
         </div>
       )}
 
@@ -86,6 +107,18 @@ export default function Navbar() {
                 {path.slice(1)}
               </Link>
             ))}
+            {session ? (
+              <>
+                <Link to="/my-bookings" style={{ fontSize: '.8rem', fontWeight: 500, letterSpacing: '.08em', textTransform: 'uppercase', color: linkColor, textDecoration: 'none', transition: 'color .3s' }}>
+                  My Bookings
+                </Link>
+                <span style={{ fontSize: '.8rem', fontWeight: 500, color: linkColor }}>Hi, {firstName}</span>
+              </>
+            ) : (
+              <Link to="/enquiry?signin=1" style={{ fontSize: '.8rem', fontWeight: 500, letterSpacing: '.08em', textTransform: 'uppercase', color: linkColor, textDecoration: 'none', transition: 'color .3s' }}>
+                Sign In
+              </Link>
+            )}
             <Link to="/enquiry" style={{ ...S.bookBtn }}>Book Your Event</Link>
           </div>
 

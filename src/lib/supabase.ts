@@ -7,6 +7,7 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey)
 
 export interface Enquiry {
   id?: string
+  user_id?: string | null
   name: string
   phone: string
   email: string

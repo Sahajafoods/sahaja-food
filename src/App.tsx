@@ -8,6 +8,7 @@ import About from './pages/About'
 import Enquiry from './pages/Enquiry'
 import ThankYou from './pages/ThankYou'
 import Admin from './pages/Admin'
+import MyBookings from './pages/MyBookings'
 
 export default function App() {
   return (
@@ -20,6 +21,7 @@ export default function App() {
         <Route path="/enquiry" element={<Enquiry />} />
         <Route path="/thank-you" element={<ThankYou />} />
         <Route path="/admin" element={<Admin />} />
+        <Route path="/my-bookings" element={<MyBookings />} />
       </Routes>
       <Footer />
       <WhatsAppFloat />

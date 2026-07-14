@@ -5,6 +5,7 @@
 
 create table public.enquiries (
   id uuid default gen_random_uuid() primary key,
+  user_id uuid references auth.users(id) on delete set null,
   name text not null,
   phone text not null,
   email text not null,
@@ -23,15 +24,30 @@ create table public.enquiries (
 -- alter table public.enquiries add column event_time time not null default '12:00';
 -- alter table public.enquiries alter column event_time drop default;
 -- alter table public.enquiries alter column guest_count type text using guest_count::text;
+-- alter table public.enquiries add column if not exists user_id uuid references auth.users(id) on delete set null;
+--
+-- The INSERT and SELECT policies below changed too (added user_id checks).
+-- If they already exist from a prior run, drop and recreate them:
+--   drop policy if exists "Anyone can submit enquiry" on public.enquiries;
+--   drop policy if exists "Users can view their own enquiries" on public.enquiries;
+-- then re-run the two `create policy` statements for them further down this file.
 
 alter table public.enquiries enable row level security;
 
 -- ── RLS POLICIES ────────────────────────────────────────────────────
 
--- Public: anyone can INSERT (enquiry form submissions)
+-- Public: anyone can INSERT (enquiry form submissions), guest or signed-in.
+-- Signed-in users may only attach their OWN user_id — this stops an
+-- authenticated visitor from spoofing someone else's user_id and polluting
+-- their "My Bookings" list with fake entries.
 create policy "Anyone can submit enquiry"
   on public.enquiries for insert
-  with check (true);
+  with check (user_id is null or auth.uid() = user_id);
+
+-- Signed-in users: SELECT only their own enquiries (for the My Bookings page)
+create policy "Users can view their own enquiries"
+  on public.enquiries for select
+  using (auth.uid() = user_id);
 
 -- Admin only: SELECT — only nandinips90@gmail.com and foodssahaja@gmail.com
 --
@@ -62,10 +78,18 @@ create policy "Admin can update status"
 -- 2. In that same Google Cloud OAuth client, add this Authorized redirect URI:
 --      https://<your-project-ref>.supabase.co/auth/v1/callback
 --    (shown on the Supabase Google provider settings page)
--- 3. Authentication > URL Configuration > Redirect URLs → add:
+-- 3. Authentication > URL Configuration > Redirect URLs → Google sign-in
+--    now also happens on /enquiry and /my-bookings (customer-facing, open
+--    to any Google account), not just /admin. Either add each path:
 --      https://sahaja.food/admin
---    Add http://localhost:5173/admin too if you want to test Google
---    sign-in from a local dev server.
--- Both nandinips90@gmail.com and foodssahaja@gmail.com can sign in via
--- Google. Any other Google account is signed out immediately by the app
--- and blocked from reading/writing enquiries by the RLS policies above.
+--      https://sahaja.food/enquiry
+--      https://sahaja.food/my-bookings
+--    or add the wildcard https://sahaja.food/* to cover all current and
+--    future pages in one entry. Add the http://localhost:5173/* equivalents
+--    too if you want to test Google sign-in from a local dev server.
+-- Admin panel access (nandinips90@gmail.com and foodssahaja@gmail.com only)
+-- is enforced both client-side and by the admin RLS policies above. Any
+-- Google account can sign in on /enquiry or /my-bookings to manage their
+-- OWN bookings — that's by design (it's a customer account feature, not
+-- an admin gate) — and the RLS "Users can view their own enquiries" policy
+-- above ensures they only ever see their own rows.
