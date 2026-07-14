@@ -1,24 +1,13 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useReveal } from '../hooks/useReveal'
+import { TabKey, TAB_LABELS, TAB_COLORS, COMBOS } from '../data/menuCombos'
 
 const STRIP_ITEMS = [
   ['🍌','Banana Leaf Meals'],['🍗','Chettinad Non-Veg'],['🌿','Authentic South Indian Veg'],
   ['✓','FSSAI Certified Kitchen'],['📱','WhatsApp Confirmed'],
   ['🎊','Weddings & Receptions'],['🏠','Housewarming Ceremonies'],
   ['💼','Corporate Events'],['🍛','Karnataka Cuisine'],['🥥','Kerala Sadhya'],
-]
-
-const VEG_DISHES = [
-  { name: 'Dal Makhani', desc: 'Slow-cooked black lentils in a rich tomato and butter base. A celebration staple.', price: '₹80', img: 'https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=700&q=80&auto=format&fit=crop' },
-  { name: 'Vegetable Biryani', desc: 'Aromatic basmati with seasonal vegetables and saffron. Served with house raita.', price: '₹120', img: 'https://images.unsplash.com/photo-1567188040759-fb8a883dc6d8?w=700&q=80&auto=format&fit=crop' },
-  { name: 'Paneer Butter Masala', desc: 'Soft cottage cheese in a velvety tomato-cashew gravy. A crowd-pleaser every time.', price: '₹110', img: 'https://images.unsplash.com/photo-1631452180519-c014fe946bc7?w=700&q=80&auto=format&fit=crop' },
-]
-
-const NONVEG_DISHES = [
-  { name: 'Chicken Biryani', desc: 'Dum-cooked basmati with tender chicken and our house spice blend. Iconic.', price: '₹150', img: 'https://images.unsplash.com/photo-1563379091339-03246963d96c?w=700&q=80&auto=format&fit=crop' },
-  { name: 'Mutton Curry', desc: 'Bone-in mutton slow-cooked in a bold Karnataka-style gravy. Pure comfort.', price: '₹180', img: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=700&q=80&auto=format&fit=crop' },
-  { name: 'Chicken Chettinad', desc: 'Freshly ground Chettinad masala. Fiery, fragrant, unforgettable.', price: '₹160', img: 'https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?w=700&q=80&auto=format&fit=crop' },
 ]
 
 const GALLERY_IMAGES = [
@@ -33,7 +22,7 @@ const GALLERY_IMAGES = [
 
 export default function Home() {
   useReveal()
-  const [menuTab, setMenuTab] = useState<'veg'|'nonveg'>('veg')
+  const [menuTab, setMenuTab] = useState<TabKey>('nonveg')
   const [counted, setCounted] = useState(false)
   const [count, setCount] = useState(0)
   const statsRef = useRef<HTMLDivElement>(null)
@@ -61,7 +50,7 @@ export default function Home() {
     return () => obs.disconnect()
   }, [counted])
 
-  const dishes = menuTab === 'veg' ? VEG_DISHES : NONVEG_DISHES
+  const combos = COMBOS[menuTab]
 
   return (
     <div>
@@ -131,19 +120,19 @@ export default function Home() {
               <div style={eyebrow}>Our Menu</div>
               <h2 style={h2}>Curated with <em style={{ fontStyle: 'italic', color: 'var(--m)' }}>care</em><br/>and tradition</h2>
               <p style={bodyLg}>Every dish made fresh. Ingredients sourced every morning.<br/>Veg &amp; Non-Veg. Minimum 50 plates per item.</p>
-              <div style={{ display: 'flex', gap: 0, border: '1px solid var(--iv3)', overflow: 'hidden', marginTop: 28, width: 'fit-content' }}>
-                {['veg','nonveg'].map(tab => (
-                  <button key={tab} onClick={() => setMenuTab(tab as 'veg'|'nonveg')} style={{ padding: '13px 32px', fontFamily: 'Jost,sans-serif', fontSize: '.78rem', fontWeight: 600, letterSpacing: '.1em', textTransform: 'uppercase', cursor: 'pointer', background: menuTab === tab ? 'var(--m)' : 'transparent', color: menuTab === tab ? '#fff' : 'var(--tx2)', border: 'none', borderRight: tab === 'veg' ? '1px solid var(--iv3)' : 'none', transition: 'all .25s' }}>
-                    {tab === 'veg' ? '🌿 Vegetarian' : '🍗 Non-Vegetarian'}
+              <div style={{ display: 'flex', gap: 0, border: '1px solid var(--iv3)', overflow: 'hidden', marginTop: 28, width: 'fit-content', flexWrap: 'wrap' }}>
+                {(Object.keys(TAB_LABELS) as TabKey[]).map((tab, i) => (
+                  <button key={tab} onClick={() => setMenuTab(tab)} style={{ padding: '13px 28px', fontFamily: 'Jost,sans-serif', fontSize: '.78rem', fontWeight: 600, letterSpacing: '.08em', textTransform: 'uppercase', cursor: 'pointer', background: menuTab === tab ? TAB_COLORS[tab] : 'transparent', color: menuTab === tab ? '#fff' : 'var(--tx2)', border: 'none', borderRight: i < 2 ? '1px solid var(--iv3)' : 'none', transition: 'all .25s' }}>
+                    {TAB_LABELS[tab]}
                   </button>
                 ))}
               </div>
             </div>
             <Link to="/enquiry" style={btnMaroon}>Request This Menu</Link>
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(min(100%,320px),1fr))', gap: 2 }}>
-            {dishes.map((d) => (
-              <DishCard key={d.name} dish={d} isVeg={menuTab === 'veg'} />
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2,1fr)', gap: 20 }} className="combo-preview-grid">
+            {combos.map((c) => (
+              <ComboPreviewCard key={c.name} combo={c} />
             ))}
           </div>
           <div style={{ textAlign: 'center', marginTop: 64 }} className="reveal">
@@ -276,6 +265,7 @@ export default function Home() {
           .mob-sticky-book { display: block !important; }
           section[id="how"] > div > div[style*="grid-template-columns"] { grid-template-columns: 1fr 1fr !important; }
           .gallery-grid { column-count: 1 !important; }
+          .combo-preview-grid { grid-template-columns: 1fr !important; }
         }
         @media(max-width:480px){
           section[id="how"] > div > div[style*="grid-template-columns"] { grid-template-columns: 1fr !important; }
@@ -285,23 +275,24 @@ export default function Home() {
   )
 }
 
-function DishCard({ dish, isVeg }: { dish: { name: string; desc: string; price: string; img: string }; isVeg: boolean }) {
+function ComboPreviewCard({ combo }: { combo: { name: string; items: string[]; img: string } }) {
   return (
-    <div style={{ position: 'relative', overflow: 'hidden', aspectRatio: '3/4', cursor: 'pointer', background: 'var(--iv2)' }} className="reveal dish-card-wrap"
+    <div style={{ position: 'relative', overflow: 'hidden', aspectRatio: '4/5', cursor: 'pointer', background: 'var(--iv2)' }} className="reveal dish-card-wrap"
       onMouseEnter={e => { const img = (e.currentTarget as HTMLElement).querySelector('.dish-bg-img') as HTMLElement; if (img) img.style.transform = 'scale(1.07)' }}
       onMouseLeave={e => { const img = (e.currentTarget as HTMLElement).querySelector('.dish-bg-img') as HTMLElement; if (img) img.style.transform = 'scale(1)' }}
     >
-      <img src={dish.img} alt={dish.name} className="dish-bg-img" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', transition: 'transform .5s ease' }} loading="lazy" />
-      <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top,rgba(20,6,12,.9) 0%,rgba(20,6,12,.2) 60%,transparent 100%)' }} />
+      <img src={combo.img} alt={combo.name} className="dish-bg-img" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', transition: 'transform .5s ease' }} loading="lazy" />
+      <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top,rgba(20,6,12,.92) 0%,rgba(20,6,12,.4) 55%,transparent 100%)' }} />
       <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '28px 28px 32px' }}>
-        <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: '.68rem', fontWeight: 600, letterSpacing: '.1em', textTransform: 'uppercase', padding: '4px 12px', marginBottom: 12, color: isVeg ? 'var(--vg)' : '#e88a6a', background: isVeg ? 'rgba(42,96,64,.15)' : 'rgba(139,48,21,.2)', border: `1px solid ${isVeg ? 'rgba(42,96,64,.3)' : 'rgba(139,48,21,.3)'}` }}>
-          <span style={{ width: 6, height: 6, borderRadius: '50%', background: isVeg ? 'var(--vg)' : '#e88a6a', display: 'inline-block' }} />
-          {isVeg ? 'Vegetarian' : 'Non-Vegetarian'}
-        </span>
-        <div style={{ fontFamily: '"Cormorant Garamond",serif', fontSize: '1.4rem', fontWeight: 700, color: '#fff', lineHeight: 1.15, marginBottom: 6 }}>{dish.name}</div>
-        <div style={{ fontSize: '.82rem', color: 'rgba(255,255,255,.6)', lineHeight: 1.5, marginBottom: 14 }}>{dish.desc}</div>
-        <div style={{ fontFamily: '"Cormorant Garamond",serif', fontSize: '1.15rem', fontWeight: 600, color: 'var(--cu2)' }}>{dish.price} <span style={{ fontSize: '.8rem', opacity: .6 }}>/ plate</span></div>
-        <div style={{ fontSize: '.68rem', color: 'rgba(255,255,255,.35)', marginTop: 2, letterSpacing: '.04em' }}>Minimum 50 plates</div>
+        <div style={{ fontFamily: '"Cormorant Garamond",serif', fontSize: '1.4rem', fontWeight: 700, color: '#fff', marginBottom: 14 }}>{combo.name}</div>
+        <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 7 }}>
+          {combo.items.map(item => (
+            <li key={item} style={{ display: 'flex', alignItems: 'center', gap: 10, fontSize: '.85rem', color: 'rgba(255,255,255,.85)' }}>
+              <span style={{ width: 5, height: 5, background: 'var(--cu2)', display: 'inline-block', flexShrink: 0 }} />
+              {item}
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
   )
