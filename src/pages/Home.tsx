@@ -31,12 +31,6 @@ const GALLERY_IMAGES = [
   'https://lhlqtrexevjgfhiszsak.supabase.co/storage/v1/object/public/Gallery/9.jpeg',
 ]
 
-const TESTI = [
-  { q: "The biryani was the highlight of our daughter's wedding. Every single guest asked who the caterer was. We've already booked Sahaja for the next event.", name: 'Ramesh K.', ev: 'Wedding · 300 guests', init: 'R' },
-  { q: "Food arrived on time, piping hot, genuinely home-cooked quality. Our team has been asking for a repeat ever since. Exceptional service throughout.", name: 'Priya M.', ev: 'Corporate lunch · 80 guests', init: 'P' },
-  { q: "One WhatsApp message and everything was confirmed. The sadhya was outstanding — the kind of food that makes people linger long after they're done eating.", name: 'Sunita R.', ev: 'Housewarming · 60 guests', init: 'S' },
-]
-
 export default function Home() {
   useReveal()
   const [menuTab, setMenuTab] = useState<'veg'|'nonveg'>('veg')
@@ -221,24 +215,9 @@ export default function Home() {
         <div style={{ maxWidth: 1280, margin: '0 auto', position: 'relative', zIndex: 2 }}>
           <div style={{ ...eyebrow, color: 'var(--cu2)' }} className="reveal">What Guests Say</div>
           <h2 style={{ ...h2, color: '#fff' }} className="reveal d1">Memories made <em style={{ fontStyle: 'italic', color: 'var(--cu2)' }}>at the table</em></h2>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 2, marginTop: 64 }} className="testi-grid">
-            {TESTI.map((t, i) => (
-              <div key={t.name} style={{ background: 'rgba(255,255,255,.04)', border: '1px solid rgba(255,255,255,.07)', padding: '44px 40px', transition: 'background .3s' }} className={`reveal d${i+1}`}>
-                <div style={{ fontFamily: '"Cormorant Garamond",serif', fontSize: '4rem', fontWeight: 700, color: 'var(--cu)', opacity: .5, lineHeight: .8, marginBottom: 8 }}>"</div>
-                <div style={{ display: 'flex', gap: 3, marginBottom: 18 }}>{[1,2,3,4,5].map(s => <span key={s} style={{ color: 'var(--cu2)', fontSize: '.9rem' }}>★</span>)}</div>
-                <p style={{ fontFamily: '"Cormorant Garamond",serif', fontStyle: 'italic', fontSize: '1.12rem', color: 'rgba(255,255,255,.88)', lineHeight: 1.75, marginBottom: 32 }}>{t.q}</p>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
-                  <div style={{ width: 48, height: 48, background: 'rgba(184,120,74,.25)', border: '1.5px solid var(--cu)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: '"Cormorant Garamond",serif', fontWeight: 700, fontSize: '1.1rem', color: 'var(--cu2)', flexShrink: 0 }}>{t.init}</div>
-                  <div>
-                    <div style={{ fontWeight: 600, color: '#fff', fontSize: '.9rem' }}>{t.name}</div>
-                    <div style={{ fontSize: '.75rem', color: 'rgba(255,255,255,.38)', marginTop: 3, letterSpacing: '.04em' }}>{t.ev}</div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-          <div style={{ textAlign: 'center', marginTop: 64 }} className="reveal">
-            <Link to="/enquiry" style={btnPrimary}>Book Your Event</Link>
+          <div style={{ maxWidth: 640, margin: '64px auto 0', background: 'rgba(255,255,255,.04)', border: '2px solid var(--m)', padding: 'clamp(40px,6vw,64px)', textAlign: 'center' }} className="reveal d1">
+            <div style={{ fontFamily: '"Cormorant Garamond",serif', fontStyle: 'italic', fontSize: '1.4rem', color: 'var(--cu2)', lineHeight: 1.5, marginBottom: 32 }}>Be the first to share your experience</div>
+            <Link to="/enquiry" style={btnPrimary}>Book Your Event →</Link>
           </div>
         </div>
       </section>
@@ -273,7 +252,6 @@ export default function Home() {
         .about-img-inner:hover { transform: scale(1.04); }
         .about-band { grid-template-columns: 1fr 1fr; }
         .steps-grid { grid-template-columns: repeat(4,1fr); }
-        .testi-grid { grid-template-columns: repeat(3,1fr); }
         .gallery-grid { column-count: 3; column-gap: 20px; }
         .gallery-item { break-inside: avoid; margin-bottom: 20px; overflow: hidden; position: relative; }
         .gallery-item img { width: 100%; height: auto; display: block; transition: transform .6s ease; }
@@ -282,12 +260,10 @@ export default function Home() {
           .about-band { grid-template-columns: 1fr !important; }
           .steps-grid { grid-template-columns: 1fr 1fr !important; gap: 48px !important; }
           .steps-line { display: none !important; }
-          .testi-grid { grid-template-columns: 1fr 1fr !important; }
           .gallery-grid { column-count: 2 !important; }
         }
         @media(max-width:768px){
           .hero-stats-wrap { flex-direction: column !important; width: 100% !important; }
-          .testi-grid { grid-template-columns: 1fr !important; }
           .mob-sticky-book { display: block !important; }
           section[id="how"] > div > div[style*="grid-template-columns"] { grid-template-columns: 1fr 1fr !important; }
           .gallery-grid { column-count: 1 !important; }

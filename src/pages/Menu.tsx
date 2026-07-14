@@ -13,7 +13,7 @@ const TAB_COLORS: Record<TabKey, string> = { nonveg: 'var(--nv)', veg: 'var(--vg
 const COMBOS: Record<TabKey, { name: string; items: string[]; img: string }[]> = {
   nonveg: [
     { name: 'Combo 1', items: ['3 Phulkas', 'Chicken Gravy', 'Sabji', 'Salad'], img: 'https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?w=700&q=80&auto=format&fit=crop' },
-    { name: 'Combo 2', items: ['White Rice', 'Chicken Gravy', 'Sabji', 'Salad'], img: 'https://images.unsplash.com/photo-1563379091339-03246963d96c?w=700&q=80&auto=format&fit=crop' },
+    { name: 'Combo 2', items: ['White Rice', 'Chicken Gravy', 'Sabji', 'Salad'], img: 'https://images.unsplash.com/photo-1588166524941-3bf61a9c41db?w=700&q=80&auto=format&fit=crop' },
   ],
   veg: [
     { name: 'Combo 1', items: ['3 Phulkas', 'Veg Gravy', 'Sabji', 'Salad'], img: 'https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=700&q=80&auto=format&fit=crop' },
@@ -28,7 +28,7 @@ const COMBOS: Record<TabKey, { name: string; items: string[]; img: string }[]> =
 }
 
 const SPECIALS = [
-  { name: 'Tropical Coconut Bowl', img: 'https://images.unsplash.com/photo-1490457843367-34b21a8bb5d1?w=400&q=80&auto=format&fit=crop' },
+  { name: 'Tropical Coconut Bowl', img: 'https://images.unsplash.com/photo-1546548970-71785318a17b?w=400&q=80&auto=format&fit=crop' },
   { name: 'Watermelon Mint Hydrator', img: 'https://images.unsplash.com/photo-1497534446932-c925b458314e?w=400&q=80&auto=format&fit=crop' },
   { name: 'Chia Energy Cup', img: 'https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=400&q=80&auto=format&fit=crop' },
   { name: 'Protein Hydration Cup', img: 'https://images.unsplash.com/photo-1576092768241-dec231879fc3?w=400&q=80&auto=format&fit=crop' },

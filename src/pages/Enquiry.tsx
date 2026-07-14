@@ -7,7 +7,7 @@ import SignInModal from '../components/SignInModal'
 
 const EVENT_TYPES = ['Wedding', 'Reception', 'Birthday Party', 'Naming Ceremony', 'Baby Shower', 'Housewarming', 'Corporate Lunch', 'Corporate Dinner', 'Team Outing', 'Engagement', 'Anniversary', 'Graduation Party', 'Kitty Party', 'Farewell', 'Religious Ceremony / Pooja', 'Festival Celebration', 'Other']
 const MENU_OPTIONS = ['Breakfast', 'Brunch', 'Lunch', 'Hi-Tea / Snacks', 'Dinner', 'Breakfast + Lunch', 'Lunch + Hi-Tea', 'Hi-Tea + Dinner', 'Lunch + Dinner', 'Breakfast + Lunch + Dinner', 'Full Day (All Meals)']
-const GUEST_COUNTS = ['Up to 50', '50–100', '100–150', '150–200', '200–300', '300–400', '400–500', '500+']
+const GUEST_COUNTS = ['Up to 30', '30–50', '50–100', '100–150', '150–200', '200–300', '300–400', '400–500', '500+']
 const DRAFT_KEY = 'sahaja_enquiry_draft'
 
 type FormState = {
