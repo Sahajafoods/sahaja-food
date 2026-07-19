@@ -1,10 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useReveal } from '../hooks/useReveal'
-import { TAB_COLORS, PREVIEW_COMBOS } from '../data/menuCombos'
-
-type PreviewTab = 'nonveg' | 'veg'
-const PREVIEW_TAB_LABELS: Record<PreviewTab, string> = { nonveg: 'Non Veg', veg: 'Veg' }
 
 const STRIP_ITEMS = [
   ['🍌','Banana Leaf Meals'],['🍗','Chettinad Non-Veg'],['🌿','Authentic South Indian Veg'],
@@ -13,19 +9,14 @@ const STRIP_ITEMS = [
   ['💼','Corporate Events'],['🍛','Karnataka Cuisine'],['🥥','Kerala Sadhya'],
 ]
 
-const GALLERY_IMAGES = [
-  'https://lhlqtrexevjgfhiszsak.supabase.co/storage/v1/object/public/Gallery/1.jpeg',
-  'https://lhlqtrexevjgfhiszsak.supabase.co/storage/v1/object/public/Gallery/2.jpg',
-  'https://lhlqtrexevjgfhiszsak.supabase.co/storage/v1/object/public/Gallery/3.jpg',
-  'https://lhlqtrexevjgfhiszsak.supabase.co/storage/v1/object/public/Gallery/4.jpg',
-  'https://lhlqtrexevjgfhiszsak.supabase.co/storage/v1/object/public/Gallery/6.jpg',
-  'https://lhlqtrexevjgfhiszsak.supabase.co/storage/v1/object/public/Gallery/7.jpg',
-  'https://lhlqtrexevjgfhiszsak.supabase.co/storage/v1/object/public/Gallery/9.jpeg',
+const WHY_CARDS = [
+  ['🌿', 'Fresh Every Day', 'Ingredients sourced every morning. No pre-cooked shortcuts.'],
+  ['🍽️', 'Made for Your Event', 'Every menu customised. 30 to 500 guests. Veg and Non-Veg.'],
+  ['❤️', 'Trusted in Bangalore', '50+ celebrations. Weddings, housewarmings, corporate events and more.'],
 ]
 
 export default function Home() {
   useReveal()
-  const [menuTab, setMenuTab] = useState<PreviewTab>('nonveg')
   const [counted, setCounted] = useState(false)
   const [count, setCount] = useState(0)
   const statsRef = useRef<HTMLDivElement>(null)
@@ -52,8 +43,6 @@ export default function Home() {
     if (statsRef.current) obs.observe(statsRef.current)
     return () => obs.disconnect()
   }, [counted])
-
-  const combos = PREVIEW_COMBOS[menuTab]
 
   return (
     <div>
@@ -115,38 +104,9 @@ export default function Home() {
         </div>
       </div>
 
-      {/* ── MENU PREVIEW ── */}
-      <section style={{ background: '#fff', padding: 'clamp(64px, 10vw, 112px) clamp(20px, 5vw, 48px)' }} id="menu">
-        <div style={{ maxWidth: 1280, margin: '0 auto' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: 64, flexWrap: 'wrap', gap: 24 }} className="reveal">
-            <div>
-              <div style={eyebrow}>Our Menu</div>
-              <h2 style={h2}>Curated with <em style={{ fontStyle: 'italic', color: 'var(--m)' }}>care</em><br/>and tradition</h2>
-              <p style={bodyLg}>Every dish made fresh. Ingredients sourced every morning.<br/>Veg &amp; Non-Veg. Minimum 50 plates per item.</p>
-              <div style={{ display: 'flex', gap: 0, border: '1px solid var(--iv3)', overflow: 'hidden', marginTop: 28, width: 'fit-content', flexWrap: 'wrap' }}>
-                {(Object.keys(PREVIEW_TAB_LABELS) as PreviewTab[]).map((tab, i) => (
-                  <button key={tab} onClick={() => setMenuTab(tab)} style={{ padding: '13px 28px', fontFamily: 'Jost,sans-serif', fontSize: '.78rem', fontWeight: 600, letterSpacing: '.08em', textTransform: 'uppercase', cursor: 'pointer', background: menuTab === tab ? TAB_COLORS[tab] : 'transparent', color: menuTab === tab ? '#fff' : 'var(--tx2)', border: 'none', borderRight: i < 1 ? '1px solid var(--iv3)' : 'none', transition: 'all .25s' }}>
-                    {PREVIEW_TAB_LABELS[tab]}
-                  </button>
-                ))}
-              </div>
-            </div>
-            <Link to="/enquiry" style={btnMaroon}>Request This Menu</Link>
-          </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2,1fr)', gap: 20 }} className="combo-preview-grid">
-            {combos.map((c) => (
-              <ComboPreviewCard key={c.name} combo={c} />
-            ))}
-          </div>
-          <div style={{ textAlign: 'center', marginTop: 64 }} className="reveal">
-            <Link to="/enquiry" style={btnPrimary}>Enquire About Full Menu</Link>
-          </div>
-        </div>
-      </section>
-
       {/* ── ABOUT BAND ── */}
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', minHeight: '92vh' }} className="about-band" id="about">
-        <div style={{ position: 'relative', overflow: 'hidden', minHeight: 480 }} className="reveal-l">
+        <div style={{ position: 'relative', overflow: 'hidden' }} className="reveal-l about-img-panel">
           <div style={{ position: 'absolute', inset: 0, backgroundImage: "url('https://images.unsplash.com/photo-1547592180-85f173990554?w=900&q=85&auto=format&fit=crop')", backgroundSize: 'cover', backgroundPosition: 'center', transition: 'transform .6s ease' }} className="about-img-inner" />
           <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to right,rgba(61,21,32,.18),transparent)' }} />
           <div style={{ position: 'absolute', bottom: 48, right: -28, background: 'var(--m)', color: '#fff', padding: '24px 28px', boxShadow: '0 16px 48px rgba(61,21,32,.4)', zIndex: 2 }} className="reveal">
@@ -182,27 +142,15 @@ export default function Home() {
         </div>
       </div>
 
-      {/* ── HOW IT WORKS ── */}
-      <section style={{ background: 'var(--iv2)', padding: 'clamp(64px, 10vw, 112px) clamp(20px, 5vw, 48px)' }} id="how">
+      {/* ── WHY SAHAJA FOOD ── */}
+      <section style={{ background: 'var(--iv)', padding: '80px clamp(20px, 5vw, 48px)' }}>
         <div style={{ maxWidth: 1280, margin: '0 auto' }}>
-          <div style={{ maxWidth: 560, marginBottom: 0 }} className="reveal">
-            <div style={eyebrow}>The Process</div>
-            <h2 style={h2}>Simple from<br/>start <em style={{ fontStyle: 'italic', color: 'var(--m)' }}>to serve</em></h2>
-          </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 0, marginTop: 72, position: 'relative' }} className="steps-grid">
-            <div style={{ position: 'absolute', top: 28, left: '12.5%', right: '12.5%', height: 1, background: 'var(--iv3)', zIndex: 0 }} className="steps-line" />
-            {[['1','Tell us about your event','Fill in our short form — event type, guest count, date, menu preference. Under 2 minutes.'],
-              ['2','We confirm on WhatsApp','Instant WhatsApp and email confirmation. We follow up within hours to finalise details.'],
-              ['3','We prep fresh on your day','No pre-cooked shortcuts. Every dish prepared fresh on the day of your event.'],
-              ['4','Your guests leave happy','Generous portions, honest flavours, and the warmth of a home kitchen.'],
-            ].map(([n, title, desc], i) => (
-              <div key={n} style={{ textAlign: 'center', padding: '0 28px', position: 'relative', zIndex: 1 }} className={`reveal d${i+1}`}>
-                <div style={{ width: 56, height: 56, background: 'var(--m)', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: '"Cormorant Garamond",serif', fontSize: '1.25rem', fontWeight: 700, margin: '0 auto 28px', boxShadow: '0 6px 24px rgba(61,21,32,.28)', position: 'relative' }}>
-                  {n}
-                  <div style={{ position: 'absolute', inset: -6, border: '1px solid rgba(61,21,32,.12)' }} />
-                </div>
-                <div style={{ fontFamily: '"Cormorant Garamond",serif', fontSize: '1.15rem', fontWeight: 600, color: 'var(--tx)', marginBottom: 10, lineHeight: 1.3 }}>{title}</div>
-                <div style={{ fontSize: '.875rem', color: 'var(--tx2)', lineHeight: 1.7 }}>{desc}</div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 40 }} className="why-grid">
+            {WHY_CARDS.map(([icon, title, desc], i) => (
+              <div key={title} className={`reveal d${i + 1}`}>
+                <div style={{ width: 56, height: 56, background: 'rgba(184,120,74,.08)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.5rem', marginBottom: 20 }}>{icon}</div>
+                <div style={{ fontFamily: '"Cormorant Garamond",serif', fontSize: '1.3rem', fontWeight: 700, color: 'var(--tx)', marginBottom: 10 }}>{title}</div>
+                <div style={{ fontSize: '.9rem', color: 'var(--tx2)', lineHeight: 1.7 }}>{desc}</div>
               </div>
             ))}
           </div>
@@ -222,20 +170,13 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── GALLERY ── */}
-      <section style={{ background: 'var(--iv)', padding: 'clamp(64px, 10vw, 112px) clamp(20px, 5vw, 48px)' }} id="gallery">
-        <div style={{ maxWidth: 1280, margin: '0 auto' }}>
-          <div style={{ maxWidth: 640, marginBottom: 56 }} className="reveal">
-            <div style={eyebrow}>Our Events</div>
-            <h2 style={h2}>Food made for real <em style={{ fontStyle: 'italic', color: 'var(--m)' }}>celebrations</em></h2>
-          </div>
-          <div className="gallery-grid">
-            {GALLERY_IMAGES.map((src, i) => (
-              <div key={src} className="gallery-item reveal">
-                <img src={src} alt={`Sahaja Food event ${i + 1}`} loading="lazy" />
-              </div>
-            ))}
-          </div>
+      {/* ── ENQUIRY CTA ── */}
+      <section style={{ background: 'var(--m)', padding: 'clamp(64px, 10vw, 96px) clamp(20px, 5vw, 48px)', textAlign: 'center' }}>
+        <div style={{ maxWidth: 720, margin: '0 auto' }} className="reveal">
+          <h2 style={{ fontFamily: '"Cormorant Garamond",serif', fontSize: 'clamp(2rem,4vw,2.8rem)', fontWeight: 700, color: '#fff', marginBottom: 32, lineHeight: 1.2 }}>
+            Ready to celebrate? <em style={{ fontStyle: 'italic', color: 'var(--cu2)' }}>Let's plan your event.</em>
+          </h2>
+          <Link to="/enquiry" style={btnPrimary}>Book Your Event →</Link>
         </div>
       </section>
 
@@ -251,52 +192,19 @@ export default function Home() {
         @keyframes scrollAnim { 0%{transform:scaleY(0);transform-origin:top} 50%{transform:scaleY(1);transform-origin:top} 51%{transform:scaleY(1);transform-origin:bottom} 100%{transform:scaleY(0);transform-origin:bottom} }
         .about-img-inner:hover { transform: scale(1.04); }
         .about-band { grid-template-columns: 1fr 1fr; }
-        .steps-grid { grid-template-columns: repeat(4,1fr); }
-        .gallery-grid { column-count: 3; column-gap: 20px; }
-        .gallery-item { break-inside: avoid; margin-bottom: 20px; overflow: hidden; position: relative; }
-        .gallery-item img { width: 100%; height: auto; display: block; transition: transform .6s ease; }
-        .gallery-item:hover img { transform: scale(1.06); }
+        .about-img-panel { min-height: 600px; }
         @media(max-width:1100px){
           .about-band { grid-template-columns: 1fr !important; }
-          .steps-grid { grid-template-columns: 1fr 1fr !important; gap: 48px !important; }
-          .steps-line { display: none !important; }
-          .gallery-grid { column-count: 2 !important; }
+          .about-img-panel { min-height: 420px; }
+          .why-grid { grid-template-columns: 1fr 1fr !important; }
         }
         @media(max-width:768px){
           .hero-stats-wrap { flex-direction: column !important; align-items: flex-start !important; width: 100% !important; gap: 16px; }
           .hero-stat-divider { display: none !important; }
           .mob-sticky-book { display: block !important; }
-          section[id="how"] > div > div[style*="grid-template-columns"] { grid-template-columns: 1fr 1fr !important; }
-          .gallery-grid { column-count: 1 !important; }
-          .combo-preview-grid { grid-template-columns: 1fr !important; }
-        }
-        @media(max-width:480px){
-          section[id="how"] > div > div[style*="grid-template-columns"] { grid-template-columns: 1fr !important; }
+          .why-grid { grid-template-columns: 1fr !important; }
         }
       `}</style>
-    </div>
-  )
-}
-
-function ComboPreviewCard({ combo }: { combo: { name: string; items: string[]; img: string } }) {
-  return (
-    <div style={{ position: 'relative', overflow: 'hidden', aspectRatio: '4/5', cursor: 'pointer', background: 'var(--iv2)' }} className="reveal dish-card-wrap"
-      onMouseEnter={e => { const img = (e.currentTarget as HTMLElement).querySelector('.dish-bg-img') as HTMLElement; if (img) img.style.transform = 'scale(1.07)' }}
-      onMouseLeave={e => { const img = (e.currentTarget as HTMLElement).querySelector('.dish-bg-img') as HTMLElement; if (img) img.style.transform = 'scale(1)' }}
-    >
-      <img src={combo.img} alt={combo.name} className="dish-bg-img" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', transition: 'transform .5s ease' }} loading="lazy" />
-      <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top,rgba(20,6,12,.92) 0%,rgba(20,6,12,.4) 55%,transparent 100%)' }} />
-      <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '28px 28px 32px' }}>
-        <div style={{ fontFamily: '"Cormorant Garamond",serif', fontSize: '1.4rem', fontWeight: 700, color: '#fff', marginBottom: 14 }}>{combo.name}</div>
-        <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 7 }}>
-          {combo.items.map(item => (
-            <li key={item} style={{ display: 'flex', alignItems: 'center', gap: 10, fontSize: '.85rem', color: 'rgba(255,255,255,.85)' }}>
-              <span style={{ width: 5, height: 5, background: 'var(--cu2)', display: 'inline-block', flexShrink: 0 }} />
-              {item}
-            </li>
-          ))}
-        </ul>
-      </div>
     </div>
   )
 }
