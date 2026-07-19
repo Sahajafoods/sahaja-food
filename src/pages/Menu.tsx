@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { useReveal } from '../hooks/useReveal'
 import { TabKey, TAB_LABELS, TAB_COLORS, COMBOS, STARTER_CATEGORIES, Combo } from '../data/menuCombos'
 
-const FALLBACK_IMG = 'https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=700&q=80&auto=format&fit=crop'
+const FALLBACK_IMG = 'https://lhlqtrexevjgfhiszsak.supabase.co/storage/v1/object/public/Gallery/4.jpg'
 const onImgError = (e: React.SyntheticEvent<HTMLImageElement>) => { e.currentTarget.src = FALLBACK_IMG }
 
 function ComboCard({ combo, delay }: { combo: Combo; delay: number }) {

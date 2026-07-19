@@ -107,7 +107,7 @@ export default function Home() {
       {/* ── ABOUT BAND ── */}
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', minHeight: '92vh' }} className="about-band" id="about">
         <div style={{ position: 'relative', overflow: 'hidden' }} className="reveal-l about-img-panel">
-          <div style={{ position: 'absolute', inset: 0, backgroundImage: "url('https://images.unsplash.com/photo-1556910103-1c02745aae4d?w=900&q=85&auto=format&fit=crop')", backgroundSize: 'cover', backgroundPosition: 'center', transition: 'transform .6s ease' }} className="about-img-inner" />
+          <div style={{ position: 'absolute', inset: 0, backgroundImage: "url('https://lhlqtrexevjgfhiszsak.supabase.co/storage/v1/object/public/Gallery/3.jpg')", backgroundSize: 'cover', backgroundPosition: 'center', transition: 'transform .6s ease' }} className="about-img-inner" />
           <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to right,rgba(61,21,32,.18),transparent)' }} />
           <div style={{ position: 'absolute', bottom: 48, right: -28, background: 'var(--m)', color: '#fff', padding: '24px 28px', boxShadow: '0 16px 48px rgba(61,21,32,.4)', zIndex: 2 }} className="reveal">
             <div style={{ fontFamily: '"Cormorant Garamond",serif', fontSize: '2.8rem', fontWeight: 700, color: 'var(--cu2)', lineHeight: 1 }}>50+</div>

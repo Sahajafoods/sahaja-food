@@ -45,7 +45,7 @@ export const COMBOS: Record<'nonveg' | 'veg', Combo[]> = {
     },
     {
       name: 'Mutton Biryani Combo',
-      img: 'https://images.unsplash.com/photo-1547592180-85f173990554?w=700&q=85&auto=format&fit=crop',
+      img: 'https://images.unsplash.com/photo-1631515243349-e0cb75fb8d3a?w=700&q=85&auto=format&fit=crop',
       sections: [
         { label: 'Sweet', value: 'Jalebi / Rabdi' },
         { label: 'Salad', value: 'Egg · Lime · Cucumber' },
@@ -58,7 +58,7 @@ export const COMBOS: Record<'nonveg' | 'veg', Combo[]> = {
     },
     {
       name: 'Mutton & Chicken Grand',
-      img: 'https://images.unsplash.com/photo-1588166524941-3bf61a9c41db?w=700&q=85&auto=format&fit=crop',
+      img: 'https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?w=700&q=85&auto=format&fit=crop',
       sections: [
         { label: 'Sweet', value: 'Rasmalai / Putharekulu' },
         { label: 'Salad', value: 'Egg · Lime · Cucumber' },
@@ -72,7 +72,7 @@ export const COMBOS: Record<'nonveg' | 'veg', Combo[]> = {
     {
       name: 'Premium Mutton Feast',
       badge: 'PREMIUM',
-      img: 'https://images.unsplash.com/photo-1567188040759-fb8a883dc6d8?w=700&q=85&auto=format&fit=crop',
+      img: 'https://images.unsplash.com/photo-1628294895950-9805252327bc?w=700&q=85&auto=format&fit=crop',
       sections: [
         { label: 'Sweet', value: 'Rasmalai / Paal Kolukattai' },
         { label: 'Bread', value: 'Phulka (2 pcs) / Ragi Ball (1 pc)' },
@@ -87,7 +87,7 @@ export const COMBOS: Record<'nonveg' | 'veg', Combo[]> = {
   veg: [
     {
       name: 'Simple Veg Meal',
-      img: 'https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=700&q=85&auto=format&fit=crop',
+      img: 'https://lhlqtrexevjgfhiszsak.supabase.co/storage/v1/object/public/Gallery/4.jpg',
       sections: [
         { label: 'Sweet', value: 'Jamun / Mysore Pak / Payasa' },
         { label: 'Starter', value: 'Aloo Kebab / Veg Bonda' },
@@ -97,7 +97,7 @@ export const COMBOS: Record<'nonveg' | 'veg', Combo[]> = {
     },
     {
       name: 'Veg Biryani Celebration',
-      img: 'https://images.unsplash.com/photo-1596560548464-f010549b84d7?w=700&q=85&auto=format&fit=crop',
+      img: 'https://lhlqtrexevjgfhiszsak.supabase.co/storage/v1/object/public/Gallery/3.jpg',
       sections: [
         { label: 'Welcome', value: 'Welcome Drink' },
         { label: 'Sweet', value: 'Chiroti / Jamun / Badam Puri · Payasa' },
@@ -164,14 +164,14 @@ export const PREVIEW_COMBOS: Record<'nonveg' | 'veg', PreviewCombo[]> = {
     {
       name: 'Mutton Biryani Combo',
       items: ['Mutton Biryani', 'Chicken Lollipop / Chicken Tikka', 'Mushroom Masala / Paneer Masala', 'Jalebi / Rabdi'],
-      img: 'https://images.unsplash.com/photo-1547592180-85f173990554?w=700&q=85&auto=format&fit=crop',
+      img: 'https://images.unsplash.com/photo-1631515243349-e0cb75fb8d3a?w=700&q=85&auto=format&fit=crop',
     },
   ],
   veg: [
     {
       name: 'Veg Biryani Celebration',
       items: ['Veg Biryani / Kaju Pulav', 'Gobi Manchurian / Aloo Kebab', 'Puri + Chutney + Veg Kurma', 'Chiroti / Jamun'],
-      img: 'https://images.unsplash.com/photo-1596560548464-f010549b84d7?w=700&q=85&auto=format&fit=crop',
+      img: 'https://lhlqtrexevjgfhiszsak.supabase.co/storage/v1/object/public/Gallery/3.jpg',
     },
     {
       name: 'Premium Veg Feast',
