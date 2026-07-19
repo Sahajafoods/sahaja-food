@@ -52,8 +52,8 @@ function StarterCard({ cat, delay }: { cat: { title: string; items: string[] }; 
 }
 
 export default function Menu() {
-  useReveal()
   const [tab, setTab] = useState<TabKey>('nonveg')
+  useReveal([tab])
 
   return (
     <div style={{ background: 'var(--iv)', paddingTop: 80 }}>
