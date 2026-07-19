@@ -1,8 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useReveal } from '../hooks/useReveal'
-import Lightbox, { LightboxItem } from '../components/Lightbox'
-import { TabKey, TAB_LABELS, TAB_COLORS, COMBOS } from '../data/menuCombos'
+import { TabKey, TAB_LABELS, TAB_COLORS, COMBOS, STARTER_CATEGORIES, Combo } from '../data/menuCombos'
 
 const FALLBACK_IMG = 'https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=700&q=80&auto=format&fit=crop'
 const onImgError = (e: React.SyntheticEvent<HTMLImageElement>) => { e.currentTarget.src = FALLBACK_IMG }
@@ -21,55 +20,47 @@ const PROTEIN_BOX = {
   includes: ['Fruit Portion', 'Salad'],
 }
 
-function ExpandIcon() {
+function ComboCard({ combo, delay }: { combo: Combo; delay: number }) {
   return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-      <path strokeLinecap="round" strokeLinejoin="round" d="M8 3H5a2 2 0 00-2 2v3m18 0V5a2 2 0 00-2-2h-3m0 18h3a2 2 0 002-2v-3M3 16v3a2 2 0 002 2h3" />
-    </svg>
-  )
-}
-
-function ComboCard({ combo, delay, onOpen }: { combo: { name: string; items: string[]; img: string }; delay: number; onOpen: () => void }) {
-  return (
-    <div style={{ position: 'relative', overflow: 'hidden', aspectRatio: '4/5', background: 'var(--iv2)', cursor: 'pointer' }} className={`combo-card reveal d${delay}`}
-      onClick={onOpen}
-      onMouseEnter={e => { const img = (e.currentTarget as HTMLElement).querySelector('img') as HTMLElement; if (img) img.style.transform = 'scale(1.07)' }}
-      onMouseLeave={e => { const img = (e.currentTarget as HTMLElement).querySelector('img') as HTMLElement; if (img) img.style.transform = 'scale(1)' }}
-    >
-      <img src={combo.img} alt={combo.name} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', transition: 'transform .5s ease' }} loading="lazy" onError={onImgError} />
-      <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top,rgba(20,6,12,.92) 0%,rgba(20,6,12,.4) 55%,transparent 100%)' }} />
-      <div className="combo-card-hint" style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: 8, opacity: 0, transition: 'opacity .3s', pointerEvents: 'none' }}>
-        <div style={{ width: 56, height: 56, borderRadius: '50%', background: 'rgba(0,0,0,.35)', border: '1px solid rgba(255,255,255,.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff' }}>
-          <ExpandIcon />
+    <div className={`combo-card reveal d${delay}`} style={{ background: '#fff', border: '1px solid var(--iv3)' }}>
+      <div style={{ position: 'relative', height: 200, overflow: 'hidden' }}>
+        <img src={combo.img} alt={combo.name} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} loading="lazy" onError={onImgError} />
+        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top,rgba(20,6,12,.88) 0%,rgba(20,6,12,.3) 55%,rgba(20,6,12,.5) 100%)' }} />
+        {combo.badge && (
+          <div style={{ position: 'absolute', top: 18, right: 18, background: 'var(--cu)', color: '#fff', fontSize: '.65rem', fontWeight: 700, letterSpacing: '.12em', padding: '6px 13px' }}>{combo.badge}</div>
+        )}
+        <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '20px 26px' }}>
+          <div style={{ fontFamily: '"Cormorant Garamond",serif', fontSize: 'clamp(1.5rem,2.6vw,1.9rem)', fontWeight: 700, color: '#fff' }}>{combo.name}</div>
         </div>
-        <span style={{ fontSize: '.68rem', fontWeight: 600, letterSpacing: '.1em', textTransform: 'uppercase', color: '#fff' }}>Click to view</span>
       </div>
-      <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '28px 28px 32px' }}>
-        <div style={{ fontFamily: '"Cormorant Garamond",serif', fontSize: '1.5rem', fontWeight: 700, color: '#fff', marginBottom: 14 }}>{combo.name}</div>
-        <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 7 }}>
-          {combo.items.map(item => (
-            <li key={item} style={{ display: 'flex', alignItems: 'center', gap: 10, fontSize: '.85rem', color: 'rgba(255,255,255,.88)' }}>
-              <span style={{ width: 5, height: 5, background: 'var(--cu2)', display: 'inline-block', flexShrink: 0 }} />
-              {item}
-            </li>
+      <div style={{ padding: 'clamp(22px,3vw,30px)' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+          {combo.sections.map(sec => (
+            <div key={sec.label} style={{ display: 'flex', gap: 16 }}>
+              <div style={{ minWidth: 92, flexShrink: 0, paddingTop: 2, fontFamily: 'Jost,sans-serif', fontSize: '.68rem', fontWeight: 700, letterSpacing: '.08em', textTransform: 'uppercase', color: 'var(--cu)' }}>{sec.label}</div>
+              <div style={{ fontFamily: '"Cormorant Garamond",serif', fontSize: '1.05rem', color: 'var(--tx)', lineHeight: 1.5 }}>{sec.value}</div>
+            </div>
           ))}
-        </ul>
+        </div>
+        <div style={{ height: 1, background: 'var(--cu)', opacity: .25, margin: '24px 0 16px' }} />
+        <Link to="/enquiry" style={{ fontFamily: 'Jost,sans-serif', fontSize: '.8rem', fontWeight: 600, letterSpacing: '.06em', textTransform: 'uppercase', color: 'var(--cu)', textDecoration: 'none' }}>Enquire About This Menu →</Link>
       </div>
     </div>
   )
 }
 
-function SpreadBanner({ img, title, subtitle }: { img: string; title: string; subtitle: string }) {
+function StarterCard({ cat, delay }: { cat: { title: string; items: string[] }; delay: number }) {
   return (
-    <div style={{ position: 'relative', height: 320, overflow: 'hidden' }} className="reveal">
-      <img src={img} alt={title} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 30%' }} loading="lazy" onError={onImgError} />
-      <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to right, rgba(20,6,12,.92) 0%, rgba(20,6,12,.75) 35%, rgba(20,6,12,.3) 65%, rgba(20,6,12,.05) 100%)' }} />
-      <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center' }}>
-        <div style={{ maxWidth: 480, padding: '0 24px' }} className="spread-banner-text">
-          <div style={{ fontFamily: '"Cormorant Garamond",serif', fontStyle: 'italic', fontSize: '.8rem', color: 'rgba(255,255,255,.88)', marginBottom: 12 }}>{subtitle}</div>
-          <div style={{ fontFamily: '"Cormorant Garamond",serif', fontSize: 'clamp(1.6rem,2.5vw,2.4rem)', fontWeight: 700, color: '#fff' }}>{title}</div>
-        </div>
-      </div>
+    <div className={`reveal d${delay}`} style={{ background: 'var(--iv2)', border: '1px solid var(--iv3)', padding: 'clamp(22px,3vw,28px)' }}>
+      <div style={{ fontFamily: 'Jost,sans-serif', fontSize: '.75rem', fontWeight: 700, letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--cu)', marginBottom: 18 }}>{cat.title}</div>
+      <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 9 }}>
+        {cat.items.map(item => (
+          <li key={item} style={{ display: 'flex', alignItems: 'center', gap: 10, fontFamily: '"Cormorant Garamond",serif', fontSize: '1.05rem', color: 'var(--tx)' }}>
+            <span style={{ width: 5, height: 5, background: 'var(--cu2)', display: 'inline-block', flexShrink: 0 }} />
+            {item}
+          </li>
+        ))}
+      </ul>
     </div>
   )
 }
@@ -77,8 +68,6 @@ function SpreadBanner({ img, title, subtitle }: { img: string; title: string; su
 export default function Menu() {
   useReveal()
   const [tab, setTab] = useState<TabKey>('nonveg')
-  const [lightboxItem, setLightboxItem] = useState<LightboxItem | null>(null)
-  const combos = COMBOS[tab]
 
   return (
     <div style={{ background: 'var(--iv)', paddingTop: 80 }}>
@@ -89,6 +78,7 @@ export default function Menu() {
           </div>
           <h1 style={{ fontFamily: '"Cormorant Garamond",serif', fontSize: 'clamp(2.2rem,5vw,3.6rem)', fontWeight: 700, color: '#fff', marginBottom: 12, lineHeight: 1.15 }}>Wholesome Food. Thoughtful Portions.<br />Made for Every Occasion.</h1>
           <p style={{ fontFamily: '"Cormorant Garamond",serif', fontStyle: 'italic', fontSize: '1.05rem', color: 'rgba(255,255,255,.6)' }}>Minimum 30 guests · Veg &amp; Non-Veg available · Custom menus on request</p>
+          <p style={{ fontSize: '.85rem', color: 'rgba(255,255,255,.45)', marginTop: 10 }}>All menus are fully customisable. Minimum 30 guests. Pricing shared on enquiry.</p>
           <div style={{ display: 'flex', gap: 0, border: '1px solid rgba(255,255,255,.15)', overflow: 'hidden', marginTop: 32, width: 'fit-content', flexWrap: 'wrap' }} className="menu-tabs">
             {(Object.keys(TAB_LABELS) as TabKey[]).map((t, i) => (
               <button key={t} onClick={() => setTab(t)} style={{
@@ -103,18 +93,28 @@ export default function Menu() {
 
       <section style={{ background: '#fff', paddingTop: 72 }}>
         <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 clamp(20px, 5vw, 48px)' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(min(100%,300px),1fr))', gap: 20 }}>
-            {combos.map((c, i) => (
-              <ComboCard key={c.name} combo={c} delay={(i % 3) + 1} onOpen={() => setLightboxItem({ src: c.img, alt: c.name, name: c.name, items: c.items })} />
-            ))}
-          </div>
+          {tab === 'starters' ? (
+            <>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 20 }} className="starters-grid">
+                {STARTER_CATEGORIES.map((cat, i) => (
+                  <StarterCard key={cat.title} cat={cat} delay={(i % 3) + 1} />
+                ))}
+              </div>
+              <p style={{ fontFamily: '"Cormorant Garamond",serif', fontStyle: 'italic', fontSize: '.95rem', color: 'var(--tx2)', textAlign: 'center', marginTop: 36 }}>
+                Available as add-ons to any combo. Quantities and pricing on enquiry.
+              </p>
+            </>
+          ) : (
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24 }} className="combo-grid">
+              {COMBOS[tab].map((c, i) => (
+                <ComboCard key={c.name} combo={c} delay={(i % 3) + 1} />
+              ))}
+            </div>
+          )}
         </div>
 
-        {/* ── FULL-BLEED SPREAD BANNERS ── */}
-        <div style={{ marginTop: 96 }}>
-          <SpreadBanner img="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=1600&q=90&auto=format&fit=crop" title="Pure Vegetarian" subtitle="Freshly prepared with the finest ingredients, every single day" />
-          <div style={{ height: 1, width: '100%', background: 'rgba(184,120,74,.2)' }} />
-          <SpreadBanner img="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=1600&q=90&auto=format&fit=crop" title="Non Vegetarian" subtitle="Bold flavours, tender meats, made the day of your event" />
+        <div style={{ margin: '96px auto 0', maxWidth: 1280, padding: '0 clamp(20px, 5vw, 48px)' }}>
+          <div style={{ height: 1, width: '100%', background: 'var(--cu)', opacity: .25 }} />
         </div>
 
         <div style={{ maxWidth: 1280, margin: '0 auto', padding: '96px clamp(20px, 5vw, 48px) 0' }}>
@@ -180,18 +180,15 @@ export default function Menu() {
         @media(max-width:900px){
           .specials-grid{grid-template-columns:1fr 1fr!important}
           .protein-grid{grid-template-columns:1fr!important;gap:24px!important}
+          .combo-grid{grid-template-columns:1fr!important}
+        }
+        @media(max-width:700px){
+          .starters-grid{grid-template-columns:1fr 1fr!important}
         }
         @media(max-width:480px){
           .menu-tabs button{padding:11px 16px!important;font-size:.7rem!important}
         }
-        .combo-card:hover .combo-card-hint{opacity:1!important}
-        .spread-banner-text{padding-left:72px!important}
-        @media(max-width:768px){
-          .spread-banner-text{padding-left:28px!important}
-        }
       `}</style>
-
-      <Lightbox item={lightboxItem} onClose={() => setLightboxItem(null)} />
     </div>
   )
 }

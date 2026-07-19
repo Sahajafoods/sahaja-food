@@ -1,7 +1,10 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useReveal } from '../hooks/useReveal'
-import { TabKey, TAB_LABELS, TAB_COLORS, COMBOS } from '../data/menuCombos'
+import { TAB_COLORS, PREVIEW_COMBOS } from '../data/menuCombos'
+
+type PreviewTab = 'nonveg' | 'veg'
+const PREVIEW_TAB_LABELS: Record<PreviewTab, string> = { nonveg: 'Non Veg', veg: 'Veg' }
 
 const STRIP_ITEMS = [
   ['🍌','Banana Leaf Meals'],['🍗','Chettinad Non-Veg'],['🌿','Authentic South Indian Veg'],
@@ -22,7 +25,7 @@ const GALLERY_IMAGES = [
 
 export default function Home() {
   useReveal()
-  const [menuTab, setMenuTab] = useState<TabKey>('nonveg')
+  const [menuTab, setMenuTab] = useState<PreviewTab>('nonveg')
   const [counted, setCounted] = useState(false)
   const [count, setCount] = useState(0)
   const statsRef = useRef<HTMLDivElement>(null)
@@ -50,7 +53,7 @@ export default function Home() {
     return () => obs.disconnect()
   }, [counted])
 
-  const combos = COMBOS[menuTab]
+  const combos = PREVIEW_COMBOS[menuTab]
 
   return (
     <div>
@@ -121,9 +124,9 @@ export default function Home() {
               <h2 style={h2}>Curated with <em style={{ fontStyle: 'italic', color: 'var(--m)' }}>care</em><br/>and tradition</h2>
               <p style={bodyLg}>Every dish made fresh. Ingredients sourced every morning.<br/>Veg &amp; Non-Veg. Minimum 50 plates per item.</p>
               <div style={{ display: 'flex', gap: 0, border: '1px solid var(--iv3)', overflow: 'hidden', marginTop: 28, width: 'fit-content', flexWrap: 'wrap' }}>
-                {(Object.keys(TAB_LABELS) as TabKey[]).map((tab, i) => (
-                  <button key={tab} onClick={() => setMenuTab(tab)} style={{ padding: '13px 28px', fontFamily: 'Jost,sans-serif', fontSize: '.78rem', fontWeight: 600, letterSpacing: '.08em', textTransform: 'uppercase', cursor: 'pointer', background: menuTab === tab ? TAB_COLORS[tab] : 'transparent', color: menuTab === tab ? '#fff' : 'var(--tx2)', border: 'none', borderRight: i < 2 ? '1px solid var(--iv3)' : 'none', transition: 'all .25s' }}>
-                    {TAB_LABELS[tab]}
+                {(Object.keys(PREVIEW_TAB_LABELS) as PreviewTab[]).map((tab, i) => (
+                  <button key={tab} onClick={() => setMenuTab(tab)} style={{ padding: '13px 28px', fontFamily: 'Jost,sans-serif', fontSize: '.78rem', fontWeight: 600, letterSpacing: '.08em', textTransform: 'uppercase', cursor: 'pointer', background: menuTab === tab ? TAB_COLORS[tab] : 'transparent', color: menuTab === tab ? '#fff' : 'var(--tx2)', border: 'none', borderRight: i < 1 ? '1px solid var(--iv3)' : 'none', transition: 'all .25s' }}>
+                    {PREVIEW_TAB_LABELS[tab]}
                   </button>
                 ))}
               </div>
