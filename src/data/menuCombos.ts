@@ -45,7 +45,7 @@ export const COMBOS: Record<'nonveg' | 'veg', Combo[]> = {
     },
     {
       name: 'Mutton Biryani Combo',
-      img: 'https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=700&q=85&auto=format&fit=crop',
+      img: 'https://images.unsplash.com/photo-1547592180-85f173990554?w=700&q=85&auto=format&fit=crop',
       sections: [
         { label: 'Sweet', value: 'Jalebi / Rabdi' },
         { label: 'Salad', value: 'Egg · Lime · Cucumber' },
@@ -58,7 +58,7 @@ export const COMBOS: Record<'nonveg' | 'veg', Combo[]> = {
     },
     {
       name: 'Mutton & Chicken Grand',
-      img: 'https://images.unsplash.com/photo-1574484284002-952d92456975?w=700&q=85&auto=format&fit=crop',
+      img: 'https://images.unsplash.com/photo-1588166524941-3bf61a9c41db?w=700&q=85&auto=format&fit=crop',
       sections: [
         { label: 'Sweet', value: 'Rasmalai / Putharekulu' },
         { label: 'Salad', value: 'Egg · Lime · Cucumber' },
@@ -164,7 +164,7 @@ export const PREVIEW_COMBOS: Record<'nonveg' | 'veg', PreviewCombo[]> = {
     {
       name: 'Mutton Biryani Combo',
       items: ['Mutton Biryani', 'Chicken Lollipop / Chicken Tikka', 'Mushroom Masala / Paneer Masala', 'Jalebi / Rabdi'],
-      img: 'https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=700&q=85&auto=format&fit=crop',
+      img: 'https://images.unsplash.com/photo-1547592180-85f173990554?w=700&q=85&auto=format&fit=crop',
     },
   ],
   veg: [
