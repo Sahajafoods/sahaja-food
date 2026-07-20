@@ -6,7 +6,7 @@ export default function ThankYou() {
     try { return JSON.parse(localStorage.getItem('sahaja_last_enquiry') || '{}') } catch { return {} }
   })
 
-  useEffect(() => { localStorage.removeItem('sahaja_last_enquiry') }, [])
+  useEffect(() => { try { localStorage.removeItem('sahaja_last_enquiry') } catch { /* storage blocked */ } }, [])
 
   const formattedDate = details.event_date
     ? new Date(details.event_date + 'T00:00:00').toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' })

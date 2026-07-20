@@ -61,7 +61,9 @@ export default function Enquiry() {
     try {
       const { error } = await supabase.from('enquiries').insert({ ...form, user_id: session?.user.id ?? null })
       if (error) throw error
-      localStorage.setItem('sahaja_last_enquiry', JSON.stringify({ event_type: form.event_type, event_date: form.event_date, guest_count: form.guest_count }))
+      // Storage can throw (e.g. Safari with cookies blocked) — never let it
+      // fail the submit flow after the enquiry has already been saved.
+      try { localStorage.setItem('sahaja_last_enquiry', JSON.stringify({ event_type: form.event_type, event_date: form.event_date, guest_count: form.guest_count })) } catch { /* non-fatal */ }
       fetch('/api/send-enquiry-email', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(form) }).catch(()=>{})
       navigate('/thank-you')
     } catch (err) {
