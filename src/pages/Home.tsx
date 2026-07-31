@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { Helmet } from 'react-helmet-async'
 import { useReveal } from '../hooks/useReveal'
 
 const STRIP_ITEMS = [
@@ -46,6 +47,11 @@ export default function Home() {
 
   return (
     <div>
+      <Helmet>
+        <title>Sahaja Food — Catering Services in Bangalore | Veg &amp; Non-Veg</title>
+        <meta name="description" content="Sahaja Food offers authentic South Indian catering in Bangalore for weddings, housewarmings, birthdays, and all celebrations. Veg &amp; Non-Veg. Min 30 guests. Enquire now." />
+        <link rel="canonical" href="https://www.sahaja.food/" />
+      </Helmet>
       {/* ── HERO ── */}
       <section style={{ minHeight: '100vh', position: 'relative', display: 'flex', alignItems: 'flex-end', overflow: 'hidden' }}>
         <div ref={bgRef} style={{ position: 'absolute', inset: 0, backgroundImage: "url('https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1800&q=90&auto=format&fit=crop')", backgroundSize: 'cover', backgroundPosition: 'center' }} />

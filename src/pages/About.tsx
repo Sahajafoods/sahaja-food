@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { Helmet } from 'react-helmet-async'
 import { useReveal } from '../hooks/useReveal'
 
 const FOUNDER_PHOTO = 'https://lhlqtrexevjgfhiszsak.supabase.co/storage/v1/object/public/Founder%20Pictures/Nandini%20P.png'
@@ -23,6 +24,11 @@ export default function About() {
   useReveal()
   return (
     <div style={{ background: 'var(--iv)', paddingTop: 88 }}>
+      <Helmet>
+        <title>About Sahaja Food — Homestyle Catering in Bangalore</title>
+        <meta name="description" content="Meet Nandini P, founder of Sahaja Food — bringing homestyle South Indian catering to weddings, housewarmings and celebrations across Bangalore." />
+        <link rel="canonical" href="https://www.sahaja.food/about" />
+      </Helmet>
 
       {/* ── HERO ── */}
       <section style={{ background: 'var(--m)', padding: '90px clamp(20px, 5vw, 48px)' }}>

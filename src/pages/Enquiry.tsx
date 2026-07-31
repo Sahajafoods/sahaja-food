@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
+import { Helmet } from 'react-helmet-async'
 import type { Session } from '@supabase/supabase-js'
 import { supabase } from '../lib/supabase'
 import { useReveal } from '../hooks/useReveal'
@@ -83,6 +84,11 @@ export default function Enquiry() {
 
   return (
     <div style={{ background: 'var(--iv)', paddingTop: 88 }}>
+      <Helmet>
+        <title>Enquire Now — Book Catering in Bangalore | Sahaja Food</title>
+        <meta name="description" content="Book Sahaja Food for your next celebration in Bangalore. Share your event details and we'll confirm your Veg or Non-Veg catering via WhatsApp within hours." />
+        <link rel="canonical" href="https://www.sahaja.food/enquiry" />
+      </Helmet>
       <div style={{ background: 'var(--m)', padding: '80px clamp(20px, 5vw, 48px)' }}>
         <div style={{ maxWidth: 1280, margin: '0 auto' }}>
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: 12, fontFamily: '"Cormorant Garamond",serif', fontStyle: 'italic', fontSize: '1rem', color: 'var(--cu2)', marginBottom: 16 }}>

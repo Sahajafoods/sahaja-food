@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Helmet } from 'react-helmet-async'
 import { useReveal } from '../hooks/useReveal'
 import Lightbox, { LightboxItem } from '../components/Lightbox'
 
@@ -18,6 +19,11 @@ export default function Gallery() {
 
   return (
     <div style={{ background: 'var(--iv)', paddingTop: 88 }}>
+      <Helmet>
+        <title>Gallery — Events We've Catered | Sahaja Food Bangalore</title>
+        <meta name="description" content="Browse photos from weddings, housewarmings, birthdays and celebrations catered by Sahaja Food across Bangalore." />
+        <link rel="canonical" href="https://www.sahaja.food/gallery" />
+      </Helmet>
       <div style={{ background: 'var(--m)', padding: '80px clamp(20px, 5vw, 48px) 64px' }}>
         <div style={{ maxWidth: 1280, margin: '0 auto' }}>
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: 12, fontFamily: '"Cormorant Garamond",serif', fontStyle: 'italic', fontSize: '1rem', color: 'var(--cu2)', marginBottom: 16 }}>

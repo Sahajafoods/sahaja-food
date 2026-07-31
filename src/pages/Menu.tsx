@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { Helmet } from 'react-helmet-async'
 import { useReveal } from '../hooks/useReveal'
 import { TabKey, TAB_LABELS, TAB_COLORS, COMBOS, STARTER_CATEGORIES, Combo } from '../data/menuCombos'
 
@@ -57,6 +58,11 @@ export default function Menu() {
 
   return (
     <div style={{ background: 'var(--iv)', paddingTop: 88 }}>
+      <Helmet>
+        <title>Our Menu — South Indian Veg &amp; Non-Veg Catering | Sahaja Food Bangalore</title>
+        <meta name="description" content="Explore Sahaja Food's catering menus — South Indian Veg &amp; Non-Veg combos, starters and curries for weddings, housewarmings and events across Bangalore." />
+        <link rel="canonical" href="https://www.sahaja.food/menu" />
+      </Helmet>
       <div style={{ background: 'var(--m)', padding: '80px clamp(20px, 5vw, 48px) 64px' }}>
         <div style={{ maxWidth: 1280, margin: '0 auto' }}>
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: 12, fontFamily: '"Cormorant Garamond",serif', fontStyle: 'italic', fontSize: '1rem', color: 'var(--cu2)', marginBottom: 16 }}>
