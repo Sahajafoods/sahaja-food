@@ -7,6 +7,25 @@ import { TabKey, TAB_LABELS, TAB_COLORS, COMBOS, STARTER_CATEGORIES, Combo } fro
 const FALLBACK_IMG = 'https://lhlqtrexevjgfhiszsak.supabase.co/storage/v1/object/public/Gallery/4.jpg'
 const onImgError = (e: React.SyntheticEvent<HTMLImageElement>) => { e.currentTarget.src = FALLBACK_IMG }
 
+const VEG_PURITY_NOTE = "Our vegetarian meals are prepared in entirely separate utensils, cookware, and serving vessels — never shared with non-vegetarian ingredients. We honour your faith and dietary practice with the same care we bring to every meal."
+
+function VegPurityBanner() {
+  return (
+    <div className="reveal" style={{
+      display: 'flex', alignItems: 'flex-start', gap: 20,
+      background: 'linear-gradient(135deg, rgba(42,96,64,.07), rgba(184,120,74,.05))',
+      border: '1px solid rgba(42,96,64,.2)', borderLeft: '3px solid var(--vg)',
+      padding: 'clamp(24px,3.5vw,32px) clamp(24px,4vw,36px)', marginBottom: 44,
+    }}>
+      <div style={{ width: 46, height: 46, flexShrink: 0, borderRadius: '50%', background: 'rgba(42,96,64,.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.3rem' }}>🌿</div>
+      <div>
+        <div style={{ fontFamily: '"Cormorant Garamond",serif', fontSize: '1.2rem', fontWeight: 700, color: 'var(--vg)', marginBottom: 8, letterSpacing: '.01em' }}>Our Promise of Purity</div>
+        <p style={{ fontSize: '.92rem', color: 'var(--tx2)', lineHeight: 1.75, margin: 0, maxWidth: 720 }}>{VEG_PURITY_NOTE}</p>
+      </div>
+    </div>
+  )
+}
+
 function ComboCard({ combo, delay }: { combo: Combo; delay: number }) {
   return (
     <div className={`combo-card reveal d${delay}`} style={{ background: '#fff', border: '1px solid var(--iv3)' }}>
@@ -53,7 +72,7 @@ function StarterCard({ cat, delay }: { cat: { title: string; items: string[] }; 
 }
 
 export default function Menu() {
-  const [tab, setTab] = useState<TabKey>('nonveg')
+  const [tab, setTab] = useState<TabKey>('starters')
   useReveal([tab])
 
   return (
@@ -97,11 +116,14 @@ export default function Menu() {
               </p>
             </>
           ) : (
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24 }} className="combo-grid">
-              {COMBOS[tab].map((c, i) => (
-                <ComboCard key={c.name} combo={c} delay={(i % 3) + 1} />
-              ))}
-            </div>
+            <>
+              {tab === 'veg' && <VegPurityBanner />}
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24 }} className="combo-grid">
+                {COMBOS[tab].map((c, i) => (
+                  <ComboCard key={c.name} combo={c} delay={(i % 3) + 1} />
+                ))}
+              </div>
+            </>
           )}
         </div>
 
@@ -109,7 +131,12 @@ export default function Menu() {
           <div style={{ height: 1, width: '100%', background: 'var(--cu)', opacity: .25 }} />
         </div>
 
-        <div style={{ margin: '96px auto 0', maxWidth: 1280, padding: '0 clamp(20px, 5vw, 48px)' }} className="reveal">
+        <div style={{ margin: '56px auto 0', maxWidth: 640, padding: '0 clamp(20px, 5vw, 48px)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10, textAlign: 'center' }} className="reveal">
+          <span style={{ color: 'var(--vg)', fontSize: '1rem', flexShrink: 0 }}>🌿</span>
+          <p style={{ fontFamily: '"Cormorant Garamond",serif', fontStyle: 'italic', fontSize: '.9rem', color: 'var(--tx2)', lineHeight: 1.6, margin: 0 }}>{VEG_PURITY_NOTE}</p>
+        </div>
+
+        <div style={{ margin: '56px auto 0', maxWidth: 1280, padding: '0 clamp(20px, 5vw, 48px)' }} className="reveal">
           <div style={{ background: 'var(--m)', padding: 'clamp(48px,8vw,72px) clamp(24px,5vw,48px)', textAlign: 'center' }}>
             <h2 style={{ fontFamily: '"Cormorant Garamond",serif', fontSize: 'clamp(1.8rem,3.5vw,2.6rem)', fontWeight: 700, color: '#fff', marginBottom: 32, lineHeight: 1.25 }}>
               Every menu is customised for your event.<br />Let's plan yours.

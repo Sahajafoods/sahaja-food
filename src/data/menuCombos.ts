@@ -1,7 +1,7 @@
-export type TabKey = 'nonveg' | 'veg' | 'starters'
+export type TabKey = 'starters' | 'veg' | 'nonveg'
 
-export const TAB_LABELS: Record<TabKey, string> = { nonveg: 'Non Veg', veg: 'Veg', starters: 'Starters & Curries' }
-export const TAB_COLORS: Record<TabKey, string> = { nonveg: 'var(--nv)', veg: 'var(--vg)', starters: 'var(--m)' }
+export const TAB_LABELS: Record<TabKey, string> = { starters: 'Starters & Curries', veg: 'Veg Meals', nonveg: 'Non Veg Meals' }
+export const TAB_COLORS: Record<TabKey, string> = { starters: 'var(--m)', veg: 'var(--vg)', nonveg: 'var(--nv)' }
 
 export interface ComboSection {
   label: string
@@ -16,6 +16,43 @@ export interface Combo {
 }
 
 export const COMBOS: Record<'nonveg' | 'veg', Combo[]> = {
+  veg: [
+    {
+      name: 'Simple Veg Meal',
+      img: 'https://images.unsplash.com/photo-1588644525273-f37b60d78512?w=700&q=85&auto=format&fit=crop',
+      sections: [
+        { label: 'Sweet', value: 'Jamun / Mysore Pak / Payasa' },
+        { label: 'Starter', value: 'Aloo Kebab / Veg Bonda' },
+        { label: 'Rice', value: 'Menthya Bath / Peas Pulav / Veg Pulav' },
+        { label: 'Extras', value: 'White Rice + Rasam · Beans Sabji / Aloo Fry · Corn & Cucumber Salad · Pickle + Curd + Papad' },
+      ],
+    },
+    {
+      name: 'Veg Biryani Celebration',
+      img: 'https://images.unsplash.com/photo-1589778655375-3e622a9fc91c?w=700&q=85&auto=format&fit=crop',
+      sections: [
+        { label: 'Welcome', value: 'Welcome Drink' },
+        { label: 'Sweet', value: 'Chiroti / Jamun / Badam Puri · Payasa' },
+        { label: 'Bread', value: 'Puri + Chutney + Veg Kurma or Sagu' },
+        { label: 'Starter', value: 'Gobi Manchurian / Aloo Kebab / Ladies Finger Fry / Bonda' },
+        { label: 'Rice', value: 'Veg Biryani / Kaju Pulav' },
+        { label: 'Extras', value: 'White Rice + Sambar + Rasam + Pickle + Curd + Papad · Sabji (any 2) · Beeda' },
+      ],
+    },
+    {
+      name: 'Premium Veg Feast',
+      badge: 'PREMIUM',
+      img: 'https://images.unsplash.com/photo-1555244162-803834f70033?w=700&q=85&auto=format&fit=crop',
+      sections: [
+        { label: 'Welcome', value: 'Welcome Drink + Snacks' },
+        { label: 'Sweet', value: 'Rasgolla / Kova Barfi / Paal Kolukattai · Payasam' },
+        { label: 'Bread', value: 'Phulka + Veg Gravy' },
+        { label: 'Starter', value: 'Paneer / Baby Corn / Mushroom Manchurian' },
+        { label: 'Rice', value: 'Fried Rice / Veg Biryani / Ghee Rice / Mushroom Biryani' },
+        { label: 'Extras', value: 'White Rice + Sambar + Rasam + Pickle + Curd + Papad · 2 types of Sabji · Ice Cream' },
+      ],
+    },
+  ],
   nonveg: [
     {
       name: 'Classic Chicken Feast',
@@ -81,43 +118,6 @@ export const COMBOS: Record<'nonveg' | 'veg', Combo[]> = {
         { label: 'Chicken Gravy', value: 'Chettinad Chicken / Chicken Kurma Masala' },
         { label: 'Dry', value: 'Pepper Chicken / Chilli Chicken' },
         { label: 'Extras', value: 'White Rice + Rasam · Ice Cream + Beeda' },
-      ],
-    },
-  ],
-  veg: [
-    {
-      name: 'Simple Veg Meal',
-      img: 'https://images.unsplash.com/photo-1588644525273-f37b60d78512?w=700&q=85&auto=format&fit=crop',
-      sections: [
-        { label: 'Sweet', value: 'Jamun / Mysore Pak / Payasa' },
-        { label: 'Starter', value: 'Aloo Kebab / Veg Bonda' },
-        { label: 'Rice', value: 'Menthya Bath / Peas Pulav / Veg Pulav' },
-        { label: 'Extras', value: 'White Rice + Rasam · Beans Sabji / Aloo Fry · Corn & Cucumber Salad · Pickle + Curd + Papad' },
-      ],
-    },
-    {
-      name: 'Veg Biryani Celebration',
-      img: 'https://images.unsplash.com/photo-1589778655375-3e622a9fc91c?w=700&q=85&auto=format&fit=crop',
-      sections: [
-        { label: 'Welcome', value: 'Welcome Drink' },
-        { label: 'Sweet', value: 'Chiroti / Jamun / Badam Puri · Payasa' },
-        { label: 'Bread', value: 'Puri + Chutney + Veg Kurma or Sagu' },
-        { label: 'Starter', value: 'Gobi Manchurian / Aloo Kebab / Ladies Finger Fry / Bonda' },
-        { label: 'Rice', value: 'Veg Biryani / Kaju Pulav' },
-        { label: 'Extras', value: 'White Rice + Sambar + Rasam + Pickle + Curd + Papad · Sabji (any 2) · Beeda' },
-      ],
-    },
-    {
-      name: 'Premium Veg Feast',
-      badge: 'PREMIUM',
-      img: 'https://images.unsplash.com/photo-1555244162-803834f70033?w=700&q=85&auto=format&fit=crop',
-      sections: [
-        { label: 'Welcome', value: 'Welcome Drink + Snacks' },
-        { label: 'Sweet', value: 'Rasgolla / Kova Barfi / Paal Kolukattai · Payasam' },
-        { label: 'Bread', value: 'Phulka + Veg Gravy' },
-        { label: 'Starter', value: 'Paneer / Baby Corn / Mushroom Manchurian' },
-        { label: 'Rice', value: 'Fried Rice / Veg Biryani / Ghee Rice / Mushroom Biryani' },
-        { label: 'Extras', value: 'White Rice + Sambar + Rasam + Pickle + Curd + Papad · 2 types of Sabji · Ice Cream' },
       ],
     },
   ],
