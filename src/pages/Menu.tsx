@@ -7,20 +7,14 @@ import { TabKey, TAB_LABELS, TAB_COLORS, COMBOS, STARTER_CATEGORIES, Combo } fro
 const FALLBACK_IMG = 'https://lhlqtrexevjgfhiszsak.supabase.co/storage/v1/object/public/Gallery/4.jpg'
 const onImgError = (e: React.SyntheticEvent<HTMLImageElement>) => { e.currentTarget.src = FALLBACK_IMG }
 
-const VEG_PURITY_NOTE = "Our vegetarian meals are prepared in entirely separate utensils, cookware, and serving vessels — never shared with non-vegetarian ingredients. We honour your faith and dietary practice with the same care we bring to every meal."
-
-function VegPurityBanner() {
+function VegPurityStrip() {
   return (
-    <div className="reveal" style={{
-      display: 'flex', alignItems: 'flex-start', gap: 20,
-      background: 'linear-gradient(135deg, rgba(42,96,64,.07), rgba(184,120,74,.05))',
-      border: '1px solid rgba(42,96,64,.2)', borderLeft: '3px solid var(--vg)',
-      padding: 'clamp(24px,3.5vw,32px) clamp(24px,4vw,36px)', marginBottom: 44,
-    }}>
-      <div style={{ width: 46, height: 46, flexShrink: 0, borderRadius: '50%', background: 'rgba(42,96,64,.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.3rem' }}>🌿</div>
-      <div>
-        <div style={{ fontFamily: '"Cormorant Garamond",serif', fontSize: '1.2rem', fontWeight: 700, color: 'var(--vg)', marginBottom: 8, letterSpacing: '.01em' }}>Our Promise of Purity</div>
-        <p style={{ fontSize: '.92rem', color: 'var(--tx2)', lineHeight: 1.75, margin: 0, maxWidth: 720 }}>{VEG_PURITY_NOTE}</p>
+    <div style={{ background: 'linear-gradient(135deg, #1F4A32, #2A6040)', padding: '16px clamp(20px, 5vw, 48px)' }}>
+      <div style={{ maxWidth: 1280, margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 12, flexWrap: 'wrap' }}>
+        <span style={{ fontSize: '1.15rem', flexShrink: 0 }}>🌿</span>
+        <p style={{ margin: 0, fontFamily: 'Jost,sans-serif', fontWeight: 700, fontSize: '.9rem', letterSpacing: '.02em', color: '#fff', textAlign: 'center' }}>
+          Veg meals prepared in dedicated utensils, cookware &amp; vessels — never shared with non-veg. <span style={{ color: 'var(--cu2)' }}>Our promise.</span>
+        </p>
       </div>
     </div>
   )
@@ -55,18 +49,22 @@ function ComboCard({ combo, delay }: { combo: Combo; delay: number }) {
   )
 }
 
-function StarterCard({ cat, delay }: { cat: { title: string; items: string[] }; delay: number }) {
+function StarterCard({ cat, delay }: { cat: { title: string; items: string[]; note?: string }; delay: number }) {
   return (
     <div className={`reveal d${delay}`} style={{ background: 'var(--iv2)', border: '1px solid var(--iv3)', padding: 'clamp(22px,3vw,28px)' }}>
       <div style={{ fontFamily: 'Jost,sans-serif', fontSize: '.75rem', fontWeight: 700, letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--cu)', marginBottom: 18 }}>{cat.title}</div>
-      <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 9 }}>
-        {cat.items.map(item => (
-          <li key={item} style={{ display: 'flex', alignItems: 'center', gap: 10, fontFamily: '"Cormorant Garamond",serif', fontSize: '1.05rem', color: 'var(--tx)' }}>
-            <span style={{ width: 5, height: 5, background: 'var(--cu2)', display: 'inline-block', flexShrink: 0 }} />
-            {item}
-          </li>
-        ))}
-      </ul>
+      {cat.items.length > 0 ? (
+        <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 9 }}>
+          {cat.items.map(item => (
+            <li key={item} style={{ display: 'flex', alignItems: 'center', gap: 10, fontFamily: '"Cormorant Garamond",serif', fontSize: '1.05rem', color: 'var(--tx)' }}>
+              <span style={{ width: 5, height: 5, background: 'var(--cu2)', display: 'inline-block', flexShrink: 0 }} />
+              {item}
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p style={{ fontFamily: '"Cormorant Garamond",serif', fontStyle: 'italic', fontSize: '1rem', color: 'var(--tx2)', lineHeight: 1.6, margin: 0 }}>{cat.note}</p>
+      )}
     </div>
   )
 }
@@ -82,15 +80,15 @@ export default function Menu() {
         <meta name="description" content="Explore Sahaja Food's catering menus — South Indian Veg &amp; Non-Veg combos, starters and curries for weddings, housewarmings and events across Bangalore." />
         <link rel="canonical" href="https://www.sahaja.food/menu" />
       </Helmet>
-      <div style={{ background: 'var(--m)', padding: '80px clamp(20px, 5vw, 48px) 64px' }}>
-        <div style={{ maxWidth: 1280, margin: '0 auto' }}>
+      <div style={{ background: 'var(--m)', paddingTop: 80 }}>
+        <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 clamp(20px, 5vw, 48px)' }}>
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: 12, fontFamily: '"Cormorant Garamond",serif', fontStyle: 'italic', fontSize: '1rem', color: 'var(--cu2)', marginBottom: 16 }}>
             <span style={{ display: 'block', width: 28, height: 1, background: 'var(--cu)' }} />Foods We Serve
           </div>
           <h1 style={{ fontFamily: '"Cormorant Garamond",serif', fontSize: 'clamp(2.2rem,5vw,3.6rem)', fontWeight: 700, color: '#fff', marginBottom: 12, lineHeight: 1.15 }}>Wholesome Food. Thoughtful Portions.<br />Made for Every Occasion.</h1>
           <p style={{ fontFamily: '"Cormorant Garamond",serif', fontStyle: 'italic', fontSize: '1.05rem', color: 'rgba(255,255,255,.6)' }}>Minimum 30 guests · Veg &amp; Non-Veg available · Custom menus on request</p>
           <p style={{ fontSize: '.85rem', color: 'rgba(255,255,255,.45)', marginTop: 10 }}>All menus are fully customisable. Minimum 30 guests. Pricing shared on enquiry.</p>
-          <div style={{ display: 'flex', gap: 0, border: '1px solid rgba(255,255,255,.15)', overflow: 'hidden', marginTop: 32, width: 'fit-content', flexWrap: 'wrap' }} className="menu-tabs">
+          <div style={{ display: 'flex', gap: 0, border: '1px solid rgba(255,255,255,.15)', overflow: 'hidden', marginTop: 32, marginBottom: 40, width: 'fit-content', flexWrap: 'wrap' }} className="menu-tabs">
             {(Object.keys(TAB_LABELS) as TabKey[]).map((t, i) => (
               <button key={t} onClick={() => setTab(t)} style={{
                 padding: '13px 28px', fontFamily: 'Jost,sans-serif', fontSize: '.78rem', fontWeight: 600, letterSpacing: '.08em', textTransform: 'uppercase', cursor: 'pointer',
@@ -100,13 +98,15 @@ export default function Menu() {
             ))}
           </div>
         </div>
+        <VegPurityStrip />
+        <div style={{ height: 64 }} />
       </div>
 
       <section style={{ background: '#fff', paddingTop: 72 }}>
         <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 clamp(20px, 5vw, 48px)' }}>
           {tab === 'starters' ? (
             <>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 20 }} className="starters-grid">
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 20 }} className="starters-grid">
                 {STARTER_CATEGORIES.map((cat, i) => (
                   <StarterCard key={cat.title} cat={cat} delay={(i % 3) + 1} />
                 ))}
@@ -116,14 +116,11 @@ export default function Menu() {
               </p>
             </>
           ) : (
-            <>
-              {tab === 'veg' && <VegPurityBanner />}
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24 }} className="combo-grid">
-                {COMBOS[tab].map((c, i) => (
-                  <ComboCard key={c.name} combo={c} delay={(i % 3) + 1} />
-                ))}
-              </div>
-            </>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24 }} className="combo-grid">
+              {COMBOS[tab].map((c, i) => (
+                <ComboCard key={c.name} combo={c} delay={(i % 3) + 1} />
+              ))}
+            </div>
           )}
         </div>
 
@@ -131,12 +128,7 @@ export default function Menu() {
           <div style={{ height: 1, width: '100%', background: 'var(--cu)', opacity: .25 }} />
         </div>
 
-        <div style={{ margin: '56px auto 0', maxWidth: 640, padding: '0 clamp(20px, 5vw, 48px)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10, textAlign: 'center' }} className="reveal">
-          <span style={{ color: 'var(--vg)', fontSize: '1rem', flexShrink: 0 }}>🌿</span>
-          <p style={{ fontFamily: '"Cormorant Garamond",serif', fontStyle: 'italic', fontSize: '.9rem', color: 'var(--tx2)', lineHeight: 1.6, margin: 0 }}>{VEG_PURITY_NOTE}</p>
-        </div>
-
-        <div style={{ margin: '56px auto 0', maxWidth: 1280, padding: '0 clamp(20px, 5vw, 48px)' }} className="reveal">
+        <div style={{ margin: '96px auto 0', maxWidth: 1280, padding: '0 clamp(20px, 5vw, 48px)' }} className="reveal">
           <div style={{ background: 'var(--m)', padding: 'clamp(48px,8vw,72px) clamp(24px,5vw,48px)', textAlign: 'center' }}>
             <h2 style={{ fontFamily: '"Cormorant Garamond",serif', fontSize: 'clamp(1.8rem,3.5vw,2.6rem)', fontWeight: 700, color: '#fff', marginBottom: 32, lineHeight: 1.25 }}>
               Every menu is customised for your event.<br />Let's plan yours.

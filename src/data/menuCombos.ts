@@ -126,9 +126,19 @@ export const COMBOS: Record<'nonveg' | 'veg', Combo[]> = {
 export interface StarterCategory {
   title: string
   items: string[]
+  note?: string
 }
 
 export const STARTER_CATEGORIES: StarterCategory[] = [
+  {
+    title: 'Veg Starters',
+    items: [],
+    note: 'Available on request — ask us to customise a veg starter selection for your event.',
+  },
+  {
+    title: 'Paneer & Veg Curries',
+    items: ['Paneer Butter Masala', 'Kadai Paneer', 'Paneer Tikka', 'Palak Paneer', 'Malai Kofta', 'Veg Kurma', 'Mushroom Masala', 'Chana Masala'],
+  },
   {
     title: 'Chicken Starters',
     items: ['Chicken Sukka', 'Chicken Kebab', 'Chicken 65', 'Chicken Tikka', 'Chicken Lollipop', 'Chicken Hariyali', 'Chicken Pepper', 'Chilli Chicken'],
