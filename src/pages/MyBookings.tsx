@@ -107,7 +107,7 @@ export default function MyBookings() {
             <a href="/enquiry" style={{ display: 'inline-block', background: 'var(--m)', color: '#fff', padding: '14px 32px', fontFamily: 'Jost,sans-serif', fontWeight: 600, fontSize: '.82rem', letterSpacing: '.1em', textTransform: 'uppercase', textDecoration: 'none' }}>Book Your Event</a>
           </div>
         ) : (
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(300px,1fr))', gap: 20 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(min(300px,100%),1fr))', gap: 20 }}>
             {bookings.map(b => (
               <div key={b.id} style={{ background: '#fff', border: '1px solid var(--iv3)', padding: 'clamp(22px,4vw,28px)', boxShadow: '0 4px 24px rgba(61,21,32,.05)', display: 'flex', flexDirection: 'column' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 12, marginBottom: 16 }}>

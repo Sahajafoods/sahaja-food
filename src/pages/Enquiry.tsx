@@ -17,11 +17,15 @@ type FormState = {
 const EMPTY_FORM: FormState = { name:'', phone:'', email:'', event_type:'', event_date:'', event_time:'', menu_preference:'', guest_count:'', location:'', message:'' }
 
 const buildInitialForm = (prefill?: Partial<FormState>): FormState => {
-  const draftRaw = sessionStorage.getItem(DRAFT_KEY)
-  if (draftRaw) {
-    sessionStorage.removeItem(DRAFT_KEY)
-    try { return { ...EMPTY_FORM, ...JSON.parse(draftRaw) } } catch { /* ignore malformed draft */ }
-  }
+  // sessionStorage can throw in mobile Safari private mode / storage-blocked
+  // WebViews — never let a draft-restore attempt break the whole page.
+  try {
+    const draftRaw = sessionStorage.getItem(DRAFT_KEY)
+    if (draftRaw) {
+      sessionStorage.removeItem(DRAFT_KEY)
+      return { ...EMPTY_FORM, ...JSON.parse(draftRaw) }
+    }
+  } catch { /* storage blocked or malformed draft */ }
   return prefill ? { ...EMPTY_FORM, ...prefill } : EMPTY_FORM
 }
 
@@ -78,7 +82,7 @@ export default function Enquiry() {
   const field = (label: string) => ({ style:{ display:'flex', flexDirection:'column' as const, gap:9, marginBottom:22 }, label })
 
   return (
-    <div style={{ background: 'var(--iv)', paddingTop: 80 }}>
+    <div style={{ background: 'var(--iv)', paddingTop: 88 }}>
       <div style={{ background: 'var(--m)', padding: '80px clamp(20px, 5vw, 48px)' }}>
         <div style={{ maxWidth: 1280, margin: '0 auto' }}>
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: 12, fontFamily: '"Cormorant Garamond",serif', fontStyle: 'italic', fontSize: '1rem', color: 'var(--cu2)', marginBottom: 16 }}>
@@ -186,7 +190,7 @@ export default function Enquiry() {
         .ef:focus{ border-color:var(--cu)!important }
       `}</style>
 
-      <SignInModal open={showSignIn} onClose={() => setShowSignIn(false)} onBeforeSignIn={() => sessionStorage.setItem(DRAFT_KEY, JSON.stringify(form))} />
+      <SignInModal open={showSignIn} onClose={() => setShowSignIn(false)} onBeforeSignIn={() => { try { sessionStorage.setItem(DRAFT_KEY, JSON.stringify(form)) } catch { /* storage blocked */ } }} />
     </div>
   )
 }

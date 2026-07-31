@@ -56,6 +56,13 @@ export default function Navbar() {
   useEffect(() => { setMobOpen(false); setAvatarMenuOpen(false) }, [location])
 
   useEffect(() => {
+    if (!mobOpen) return
+    const prevOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    return () => { document.body.style.overflow = prevOverflow }
+  }, [mobOpen])
+
+  useEffect(() => {
     supabase.auth.getSession().then(({ data }) => setSession(data.session))
     const { data: listener } = supabase.auth.onAuthStateChange((_event, s) => setSession(s))
     return () => listener.subscription.unsubscribe()
@@ -90,23 +97,24 @@ export default function Navbar() {
     <>
       {/* Mobile overlay */}
       {mobOpen && (
-        <div style={{
+        <div className="mobile-nav-overlay" style={{
           position: 'fixed', inset: 0, zIndex: 200, background: 'var(--m3)',
           display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 36,
+          overflowY: 'auto', padding: '96px 24px 48px', WebkitOverflowScrolling: 'touch',
         }}>
-          <button onClick={() => setMobOpen(false)} style={{ position: 'absolute', top: 28, right: 32, background: 'none', border: 'none', color: 'rgba(255,255,255,.5)', fontSize: '2rem', cursor: 'pointer' }}>✕</button>
-          <img src="/Sahaja_Logo.png" alt="Sahaja" style={{ width: 72, height: 72, objectFit: 'contain', opacity: .8, marginBottom: 8 }} />
+          <button onClick={() => setMobOpen(false)} aria-label="Close menu" style={{ position: 'fixed', top: 28, right: 32, background: 'none', border: 'none', color: 'rgba(255,255,255,.5)', fontSize: '2rem', cursor: 'pointer', lineHeight: 1 }}>✕</button>
+          <img src="/Sahaja_Logo.png" alt="Sahaja" style={{ width: 72, height: 72, objectFit: 'contain', opacity: .8, marginBottom: 8, flexShrink: 0 }} />
           {[['/', 'Home'], ['/menu', 'Menu'], ['/about', 'About'], ['/gallery', 'Gallery'], ['/enquiry', 'Book Event']].map(([path, label]) => (
-            <Link key={path} to={path} style={{ fontFamily: '"Cormorant Garamond", serif', fontSize: '2.4rem', fontWeight: 600, color: 'rgba(255,255,255,.88)', textDecoration: 'none', letterSpacing: '.06em' }}>{label}</Link>
+            <Link key={path} to={path} className="mobile-nav-link" style={{ fontFamily: '"Cormorant Garamond", serif', fontSize: '2.4rem', fontWeight: 600, color: 'rgba(255,255,255,.88)', textDecoration: 'none', letterSpacing: '.06em', textAlign: 'center', flexShrink: 0 }}>{label}</Link>
           ))}
           {session ? (
             <>
-              <span style={{ fontFamily: '"Cormorant Garamond", serif', fontStyle: 'italic', fontSize: '1.1rem', color: 'var(--cu2)' }}>Hi, {firstName}</span>
-              <Link to="/my-bookings" style={{ fontFamily: '"Cormorant Garamond", serif', fontSize: '2.4rem', fontWeight: 600, color: 'rgba(255,255,255,.88)', textDecoration: 'none', letterSpacing: '.06em' }}>My Bookings</Link>
-              <button onClick={signOut} style={{ background: 'none', border: 'none', fontFamily: '"Cormorant Garamond", serif', fontSize: '2.4rem', fontWeight: 600, color: 'rgba(255,255,255,.88)', letterSpacing: '.06em', cursor: 'pointer' }}>Sign Out</button>
+              <span style={{ fontFamily: '"Cormorant Garamond", serif', fontStyle: 'italic', fontSize: '1.1rem', color: 'var(--cu2)', flexShrink: 0 }}>Hi, {firstName}</span>
+              <Link to="/my-bookings" className="mobile-nav-link" style={{ fontFamily: '"Cormorant Garamond", serif', fontSize: '2.4rem', fontWeight: 600, color: 'rgba(255,255,255,.88)', textDecoration: 'none', letterSpacing: '.06em', textAlign: 'center', flexShrink: 0 }}>My Bookings</Link>
+              <button onClick={signOut} className="mobile-nav-link" style={{ background: 'none', border: 'none', fontFamily: '"Cormorant Garamond", serif', fontSize: '2.4rem', fontWeight: 600, color: 'rgba(255,255,255,.88)', letterSpacing: '.06em', cursor: 'pointer', flexShrink: 0 }}>Sign Out</button>
             </>
           ) : (
-            <button onClick={() => { setMobOpen(false); setShowSignIn(true) }} style={{ background: 'none', border: 'none', fontFamily: '"Cormorant Garamond", serif', fontSize: '2.4rem', fontWeight: 600, color: 'rgba(255,255,255,.88)', letterSpacing: '.06em', cursor: 'pointer' }}>Sign In</button>
+            <button onClick={() => { setMobOpen(false); setShowSignIn(true) }} className="mobile-nav-link" style={{ background: 'none', border: 'none', fontFamily: '"Cormorant Garamond", serif', fontSize: '2.4rem', fontWeight: 600, color: 'rgba(255,255,255,.88)', letterSpacing: '.06em', cursor: 'pointer', flexShrink: 0 }}>Sign In</button>
           )}
         </div>
       )}
@@ -157,7 +165,7 @@ export default function Navbar() {
           </div>
 
           {/* Hamburger */}
-          <button onClick={() => setMobOpen(true)} className="hamburger-btn" style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 6, display: 'none', flexDirection: 'column', gap: 5 }}>
+          <button onClick={() => setMobOpen(true)} aria-label="Open menu" className="hamburger-btn" style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 12, margin: '-12px', display: 'none', flexDirection: 'column', gap: 5, alignItems: 'center', justifyContent: 'center' }}>
             {[0,1,2].map(i => <span key={i} style={{ display: 'block', width: 24, height: 1.5, background: hamColor, borderRadius: 0 }} />)}
           </button>
         </div>
@@ -167,6 +175,13 @@ export default function Navbar() {
         @media(max-width:768px){
           .desktop-nav { display: none !important; }
           .hamburger-btn { display: flex !important; }
+        }
+        @media(max-width:380px){
+          .mobile-nav-overlay { gap: 22px !important; padding: 88px 20px 40px !important; }
+          .mobile-nav-link { font-size: 1.9rem !important; }
+        }
+        @media(max-height:600px){
+          .mobile-nav-overlay { gap: 18px !important; justify-content: flex-start !important; }
         }
         a:hover { opacity: .8; }
       `}</style>

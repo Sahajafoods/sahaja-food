@@ -17,7 +17,7 @@ export default function Gallery() {
   const [active, setActive] = useState<LightboxItem | null>(null)
 
   return (
-    <div style={{ background: 'var(--iv)', paddingTop: 80 }}>
+    <div style={{ background: 'var(--iv)', paddingTop: 88 }}>
       <div style={{ background: 'var(--m)', padding: '80px clamp(20px, 5vw, 48px) 64px' }}>
         <div style={{ maxWidth: 1280, margin: '0 auto' }}>
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: 12, fontFamily: '"Cormorant Garamond",serif', fontStyle: 'italic', fontSize: '1rem', color: 'var(--cu2)', marginBottom: 16 }}>

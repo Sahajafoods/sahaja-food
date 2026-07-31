@@ -22,7 +22,7 @@ const PHILOSOPHY: [string, string, string][] = [
 export default function About() {
   useReveal()
   return (
-    <div style={{ background: 'var(--iv)', paddingTop: 80 }}>
+    <div style={{ background: 'var(--iv)', paddingTop: 88 }}>
 
       {/* ── HERO ── */}
       <section style={{ background: 'var(--m)', padding: '90px clamp(20px, 5vw, 48px)' }}>

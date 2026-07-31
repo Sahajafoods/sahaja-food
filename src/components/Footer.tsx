@@ -53,9 +53,9 @@ export default function Footer() {
         </div>
       </div>
       <style>{`
-        .footer-grid { grid-template-columns: 2.2fr 1fr 1fr 1fr; }
-        @media(max-width:1024px){ .footer-grid { grid-template-columns: 1fr 1fr; gap: 36px; } }
-        @media(max-width:640px){ .footer-grid { grid-template-columns: 1fr; } }
+        @media(max-width:1024px){ .footer-grid { grid-template-columns: 1fr 1fr !important; gap: 36px !important; } }
+        @media(max-width:640px){ .footer-grid { grid-template-columns: 1fr !important; } }
+        .footer-grid a { overflow-wrap: anywhere; }
       `}</style>
     </footer>
   )
